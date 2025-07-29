@@ -1,0 +1,670 @@
+openapi: 3.0.0
+info:
+  description: The Ours Server-Side REST API
+  title: Ours
+  version: 1.0.0
+servers:
+- url: https://api.oursprivacy.com/api/v1
+paths:
+  /track:
+    post:
+      description: "Track events from your server. Please include at least one of:\
+        \ userId, externalId, or email. These properties help us associate events\
+        \ with existing users. For all fields, null values unset the property and\
+        \ undefined values do not unset existing properties."
+      operationId: track
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/track_request"
+        description: The payload to track an event
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: Success - your event was sent to our servers
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: Bad Request - Something about the body of your request is invalid.
+            Please update your payload and try again.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: Unauthorized - you are not authorized to send events to Ours.
+            Please contact support.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: "Too Many Requests - We recommend starting with a backoff of\
+            \ 2s and doubling backoff until 60s, with 1-5s of jitter."
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: "Internal Server Error - in the unlikely event that you see\
+            \ this error, please backoff as described for a 429 response."
+      servers:
+      - url: https://api.oursprivacy.com/api/v1
+      summary: Track Events
+      tags:
+      - OursPrivacy
+  /identify:
+    post:
+      description: Add user properties to an existing user's profile.
+      operationId: identify
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/identify_request"
+        description: The payload to identify a user
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: Success - your event was sent to our servers
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: Bad Request - Something about the body of your request is invalid.
+            Please update your payload and try again.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: Unauthorized - you are not authorized to send events to Ours.
+            Please contact support.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: "Too Many Requests - We recommend starting with a backoff of\
+            \ 2s and doubling backoff until 60s, with 1-5s of jitter."
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/track_200_response"
+          description: "Internal Server Error - in the unlikely event that you see\
+            \ this error, please backoff as described for a 429 response."
+      servers:
+      - url: https://api.oursprivacy.com/api/v1
+      summary: Identify Users
+      tags:
+      - OursPrivacy
+components:
+  parameters: {}
+  schemas:
+    track_request_userProperties:
+      description: Additional user properties you want to pass along to the destinations.
+        (optional) You can also update these properties via the identify endpoint.
+      nullable: true
+      properties:
+        email:
+          maxLength: 2000
+          nullable: true
+          type: string
+        first_name:
+          maxLength: 2000
+          nullable: true
+          type: string
+        last_name:
+          maxLength: 2000
+          nullable: true
+          type: string
+        gender:
+          maxLength: 2000
+          nullable: true
+          type: string
+        date_of_birth:
+          maxLength: 2000
+          nullable: true
+          type: string
+        phone_number:
+          nullable: true
+        city:
+          maxLength: 2000
+          nullable: true
+          type: string
+        state:
+          maxLength: 2000
+          nullable: true
+          type: string
+        zip:
+          nullable: true
+        country:
+          maxLength: 2000
+          nullable: true
+          type: string
+        external_id:
+          maxLength: 2000
+          nullable: true
+          type: string
+        company_name:
+          maxLength: 2000
+          nullable: true
+          type: string
+        job_title:
+          maxLength: 2000
+          nullable: true
+          type: string
+        ip:
+          description: The IP address of the user
+          maxLength: 2000
+          nullable: true
+          type: string
+        custom_properties:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+      type: object
+    track_request_defaultProperties:
+      description: These properties are used throughout the Ours app to pass known
+        values onto destinations
+      nullable: true
+      properties:
+        is_bot:
+          description: Whether we have detected that the user is a bot. This is set
+            automatically by the Ours server primarily for events tracked through
+            the web SDK.
+          nullable: true
+          type: boolean
+        ad_id:
+          description: The ad id for detected in the session. This is set by the web
+            sdk automatically.
+          maxLength: 2000
+          nullable: true
+          type: string
+        adset_id:
+          description: The adset id for detected in the session. This is set by the
+            web sdk automatically.
+          maxLength: 2000
+          nullable: true
+          type: string
+        campaign_id:
+          description: The campaign id for detected in the session. This is set by
+            the web sdk automatically.
+          maxLength: 2000
+          nullable: true
+          type: string
+        encoding:
+          description: "The browsers encoding. Ex: UTF-8"
+          maxLength: 2000
+          nullable: true
+          type: string
+        browser_name:
+          description: "The name of the browser. Ex: Chrome"
+          maxLength: 2000
+          nullable: true
+          type: string
+        browser_version:
+          description: "The version of the browser. Ex: 114.0"
+          maxLength: 2000
+          nullable: true
+          type: string
+        cpu_architecture:
+          description: "The architecture of the CPU. Ex: x64"
+          maxLength: 2000
+          nullable: true
+          type: string
+        device_type:
+          description: "The type of device the user is using. Ex: mobile"
+          maxLength: 2000
+          nullable: true
+          type: string
+        device_model:
+          description: "The model of the device. Ex: iPhone 13"
+          maxLength: 2000
+          nullable: true
+          type: string
+        device_vendor:
+          description: "The vendor of the device. Ex: Apple"
+          maxLength: 2000
+          nullable: true
+          type: string
+        engine_name:
+          description: "The name of the browser engine. Ex: Blink"
+          maxLength: 2000
+          nullable: true
+          type: string
+        engine_version:
+          description: "The version of the browser engine. Ex: 114.0"
+          maxLength: 2000
+          nullable: true
+          type: string
+        os_name:
+          description: "The name of the operating system. Ex: Windows"
+          maxLength: 2000
+          nullable: true
+          type: string
+        os_version:
+          description: "The version of the operating system. Ex: 10.0"
+          maxLength: 2000
+          nullable: true
+          type: string
+        browser_language:
+          description: "The language of the browser. Ex: en-US"
+          maxLength: 2000
+          nullable: true
+          type: string
+        current_url:
+          description: The full url (including query params) of the current page
+          nullable: true
+          type: string
+        webview:
+          description: "Whether the user is in a webview. Ex: true"
+          nullable: true
+          type: boolean
+        iframe:
+          description: "Whether the user is in an iframe. Ex: true"
+          nullable: true
+          type: boolean
+        sessionCount:
+          description: "The number of sessions the user has had. Ex: 3"
+          nullable: true
+          type: number
+        activeDuration:
+          description: The active time in milliseconds that the user had this tab
+            active
+          nullable: true
+          type: number
+        duration:
+          description: The time in milliseconds since the page was loaded // script
+            was loaded
+          nullable: true
+          type: number
+        epik:
+          description: "The Pinterest Click ID. Ex: epik456"
+          maxLength: 2000
+          nullable: true
+          type: string
+        sacid:
+          description: "The StackAdapt Tracking ID. Ex: sacid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        fbc:
+          description: "Facebook Click ID with prefix format for Conversions API tracking.\
+            \ Ex: fb.1.1554763741205.AbCdEfGhIjKlMnOpQrStUvWxYz1234567890"
+          maxLength: 2000
+          nullable: true
+          type: string
+        fbclid:
+          description: "Raw Facebook Click ID query parameter without prefix from\
+            \ ad clicks. Ex: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890"
+          maxLength: 2000
+          nullable: true
+          type: string
+        fbclid_creation_time:
+          nullable: true
+          type: number
+        fbp:
+          description: "Facebook Browser ID parameter for identifying browsers and\
+            \ attributing events. Ex: fb.1.1554763741205.1098115397"
+          maxLength: 2000
+          nullable: true
+          type: string
+        gad_source:
+          description: "The Google Ad Source. Ex: google"
+          maxLength: 2000
+          nullable: true
+          type: string
+        gbraid:
+          description: "The Google Braid ID. Ex: gbraid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        gclid:
+          description: "The Google Click ID. Ex: gclid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        ndclid:
+          description: "The NextDoor Click ID. Ex: ndclid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        dclid:
+          description: "The DoubleClick Click ID. Ex: dclid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        qclid:
+          description: "The Quora Click ID. Ex: qclid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        rdt_cid:
+          description: "The Reddit Click ID. Ex: rdt_cid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        host:
+          description: "The host of the current page. Ex: example.com"
+          maxLength: 2000
+          nullable: true
+          type: string
+        ip:
+          description: "The IP address of the user. Ex: 127.0.0.1"
+          maxLength: 2000
+          nullable: true
+          type: string
+        msclkid:
+          description: "The Microsoft Click ID. Ex: msclkid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        li_fat_id:
+          description: "The LinkedIn Click ID. Ex: li_fat_id123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        pathname:
+          description: "The pathname of the current page. Ex: /home"
+          maxLength: 2000
+          nullable: true
+          type: string
+        referrer:
+          description: The referrer URL of the current page
+          maxLength: 5000
+          nullable: true
+          type: string
+        screen_height:
+          description: "The height of the screen. Ex: 1080"
+          nullable: true
+          type: number
+        screen_width:
+          description: "The width of the screen. Ex: 1920"
+          nullable: true
+          type: number
+        title:
+          description: The title of the current page
+          maxLength: 2000
+          nullable: true
+          type: string
+        user_agent:
+          description: The user agent of the browser
+          nullable: true
+          type: string
+        utm_campaign:
+          description: The UTM Campaign. The web SDK automatically captures this from
+            the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        utm_content:
+          description: The UTM Content. The web SDK automatically captures this from
+            the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        utm_medium:
+          description: The UTM Medium. The web SDK automatically captures this from
+            the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        utm_name:
+          description: The UTM Name. The web SDK automatically captures this from
+            the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        ttclid:
+          description: "The TikTok Click ID. Ex: ttclid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        twclid:
+          description: "The Twitter Click ID. Ex: twclid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        clickid:
+          description: "The Click ID. Ex: clickid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        clid:
+          description: "The Generic Click ID. Ex: clid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        sccid:
+          description: "The SnapChat Click ID. Ex: sccid123"
+          maxLength: 2000
+          nullable: true
+          type: string
+        utm_source:
+          description: The UTM Source. The web SDK automatically captures this from
+            the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        utm_term:
+          description: The UTM Term. The web SDK automatically captures this from
+            the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        version:
+          description: The version of the web SDK
+          maxLength: 2000
+          nullable: true
+          type: string
+        wbraid:
+          description: The WBRAID Identifier. The web SDK automatically captures this
+            from the query params.
+          maxLength: 2000
+          nullable: true
+          type: string
+        uafvl:
+          description: User agent as a full list of strings.
+          maxLength: 2000
+          nullable: true
+          type: string
+        page_hash:
+          description: A random set of numbers for the page load
+          nullable: true
+          type: number
+        sid:
+          description: The session ID as assigned automatically by the web SDK.
+          maxLength: 2000
+          nullable: true
+          type: string
+        new_s:
+          description: Deprecated
+          nullable: true
+          type: boolean
+        fv:
+          description: Deprecated
+          nullable: true
+          type: boolean
+        sr:
+          maxLength: 2000
+          nullable: true
+          type: string
+      type: object
+    track_request:
+      properties:
+        event:
+          description: The name of the event you're tracking. This must be whitelisted
+            in the Ours dashboard.
+          maxLength: 1000
+          minLength: 1
+          type: string
+        token:
+          description: The token for your Ours Privacy Source. You can find this in
+            the Ours dashboard.
+          maxLength: 250
+          minLength: 1
+          type: string
+        time:
+          description: "The time at which the event occurred, in seconds or milliseconds\
+            \ since UTC epoch. The time must be in the past and within the last 7\
+            \ days."
+          nullable: true
+          type: number
+        userId:
+          description: "The Ours user id stored in local storage and cookies on your\
+            \ web properties. If userId is included in the request, we do not lookup\
+            \ the user by email or externalId."
+          maxLength: 400
+          minLength: 1
+          nullable: true
+          type: string
+        externalId:
+          description: "The externalId (the ID in your system) of a user. We will\
+            \ associate this event with the user or create a user. If included in\
+            \ the request, email lookup is ignored."
+          maxLength: 400
+          minLength: 1
+          nullable: true
+          type: string
+        email:
+          description: The email address of a user. We will associate this event with
+            the user or create a user. Used for lookup if externalId and userId are
+            not included in the request.
+          maxLength: 1000
+          minLength: 1
+          nullable: true
+          type: string
+        eventProperties:
+          additionalProperties:
+            nullable: true
+          description: Any additional event properties you want to pass along.
+          nullable: true
+          type: object
+        userProperties:
+          $ref: "#/components/schemas/track_request_userProperties"
+        defaultProperties:
+          $ref: "#/components/schemas/track_request_defaultProperties"
+        distinctId:
+          description: A unique identifier for the event. This helps prevent duplicate
+            events.
+          maxLength: 400
+          minLength: 1
+          nullable: true
+          type: string
+      required:
+      - event
+      - token
+      type: object
+    track_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      type: object
+    identify_request_userProperties:
+      description: User properties to associate with this user. The existing user
+        properties will be updated. And all future events will have these properties
+        associated with them.
+      properties:
+        email:
+          maxLength: 2000
+          nullable: true
+          type: string
+        first_name:
+          maxLength: 2000
+          nullable: true
+          type: string
+        last_name:
+          maxLength: 2000
+          nullable: true
+          type: string
+        gender:
+          maxLength: 2000
+          nullable: true
+          type: string
+        date_of_birth:
+          maxLength: 2000
+          nullable: true
+          type: string
+        phone_number:
+          nullable: true
+        city:
+          maxLength: 2000
+          nullable: true
+          type: string
+        state:
+          maxLength: 2000
+          nullable: true
+          type: string
+        zip:
+          nullable: true
+        country:
+          maxLength: 2000
+          nullable: true
+          type: string
+        external_id:
+          maxLength: 2000
+          nullable: true
+          type: string
+        company_name:
+          maxLength: 2000
+          nullable: true
+          type: string
+        job_title:
+          maxLength: 2000
+          nullable: true
+          type: string
+        ip:
+          description: The IP address of the user
+          maxLength: 2000
+          nullable: true
+          type: string
+        custom_properties:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+      type: object
+    identify_request:
+      properties:
+        token:
+          description: The token for your Ours Privacy Source. You can find this in
+            the Ours dashboard.
+          maxLength: 250
+          minLength: 1
+          type: string
+        userId:
+          description: "The Ours user id stored in local storage and cookies on your\
+            \ web properties. If userId is included in the request, we do not lookup\
+            \ the user by email or externalId."
+          maxLength: 400
+          minLength: 1
+          type: string
+        userProperties:
+          $ref: "#/components/schemas/identify_request_userProperties"
+        defaultProperties:
+          $ref: "#/components/schemas/track_request_defaultProperties"
+      required:
+      - token
+      - userId
+      - userProperties
+      type: object
+
