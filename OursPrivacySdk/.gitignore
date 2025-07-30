@@ -360,3 +360,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# OursPrivacy ExampleApp local config
+/src/Com.OursPrivacy.ExampleApp/appsettings.Development.json
+/src/Com.OursPrivacy.ExampleApp/appsettings.Local.json
