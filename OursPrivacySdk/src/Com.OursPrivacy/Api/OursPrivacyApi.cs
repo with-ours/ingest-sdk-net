@@ -21,6 +21,7 @@ using System.Text.Json;
 using Com.OursPrivacy.Client;
 using Com.OursPrivacy.Model;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Concurrent;
 
 namespace Com.OursPrivacy.Api
 {
@@ -80,12 +81,30 @@ namespace Com.OursPrivacy.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="ITrackApiResponse"/>?&gt;</returns>
         Task<ITrackApiResponse?> TrackOrDefaultAsync(TrackRequest trackRequest, System.Threading.CancellationToken cancellationToken = default);
+
+
+        /// <summary>
+        /// Enqueue an IdentifyRequest for batching. Will be sent according to batch config.
+        /// </summary>
+        /// <param name="identifyRequest">The payload to identify a user</param>
+        public void EnqueueIdentify(IdentifyRequest identifyRequest);
+
+        /// <summary>
+        /// Enqueue a TrackRequest for batching. Will be sent according to batch config.
+        /// </summary>
+        /// <param name="trackRequest">The payload to track an event</param>
+        public void EnqueueTrack(TrackRequest trackRequest);
+
+        /// <summary>
+        /// Manually flush the event queue.
+        /// </summary>
+        public void FlushEventQueue();
     }
 
     /// <summary>
     /// The <see cref="IIdentifyApiResponse"/>
     /// </summary>
-    public interface IIdentifyApiResponse : Com.OursPrivacy.Client.IApiResponse, IOk<Com.OursPrivacy.Model.Track200Response?>, IBadRequest<Com.OursPrivacy.Model.Track200Response?>, IUnauthorized<Com.OursPrivacy.Model.Track200Response?>, ITooManyRequests<Com.OursPrivacy.Model.Track200Response?>, IInternalServerError<Com.OursPrivacy.Model.Track200Response?>
+    public interface IIdentifyApiResponse : Com.OursPrivacy.Client.IApiResponse, IOk<Com.OursPrivacy.Model.Api200Response?>, IBadRequest<Com.OursPrivacy.Model.Api200Response?>, IUnauthorized<Com.OursPrivacy.Model.Api200Response?>, ITooManyRequests<Com.OursPrivacy.Model.Api200Response?>, IInternalServerError<Com.OursPrivacy.Model.Api200Response?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -121,7 +140,7 @@ namespace Com.OursPrivacy.Api
     /// <summary>
     /// The <see cref="ITrackApiResponse"/>
     /// </summary>
-    public interface ITrackApiResponse : Com.OursPrivacy.Client.IApiResponse, IOk<Com.OursPrivacy.Model.Track200Response?>, IBadRequest<Com.OursPrivacy.Model.Track200Response?>, IUnauthorized<Com.OursPrivacy.Model.Track200Response?>, ITooManyRequests<Com.OursPrivacy.Model.Track200Response?>, IInternalServerError<Com.OursPrivacy.Model.Track200Response?>
+    public interface ITrackApiResponse : Com.OursPrivacy.Client.IApiResponse, IOk<Com.OursPrivacy.Model.Api200Response?>, IBadRequest<Com.OursPrivacy.Model.Api200Response?>, IUnauthorized<Com.OursPrivacy.Model.Api200Response?>, ITooManyRequests<Com.OursPrivacy.Model.Api200Response?>, IInternalServerError<Com.OursPrivacy.Model.Api200Response?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -205,6 +224,7 @@ namespace Com.OursPrivacy.Api
     /// </summary>
     public sealed partial class OursPrivacyApi : IOursPrivacyApi
     {
+        private string _apiKey = string.Empty;
         private JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
@@ -227,17 +247,35 @@ namespace Com.OursPrivacy.Api
         /// </summary>
         public OursPrivacyApiEvents Events { get; }
 
+        // Batching token for Identify and Track (shared)
+        private readonly EventBatch _eventBatch;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OursPrivacyApi"/> class.
         /// </summary>
-        /// <returns></returns>
-        public OursPrivacyApi(ILogger<OursPrivacyApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, OursPrivacyApiEvents oursPrivacyApiEvents)
+        /// <param name="logger"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="httpClient"></param>
+        /// <param name="jsonSerializerOptionsProvider"></param>
+        /// <param name="oursPrivacyApiEvents"></param>
+        /// <param name="hostConfig">The host configuration for batching options</param>
+        /// <param name="eventBatch">The event batch for batching requests</param>
+        public OursPrivacyApi(
+            ILogger<OursPrivacyApi> logger,
+            ILoggerFactory loggerFactory,
+            HttpClient httpClient,
+            JsonSerializerOptionsProvider jsonSerializerOptionsProvider,
+            OursPrivacyApiEvents oursPrivacyApiEvents,
+            HostConfiguration hostConfig,
+            EventBatch eventBatch)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger<OursPrivacyApi>();
             HttpClient = httpClient;
             Events = oursPrivacyApiEvents;
+            _eventBatch = eventBatch;
+            _apiKey = hostConfig.ApiKey;
         }
 
         partial void FormatIdentify(IdentifyRequest identifyRequest);
@@ -279,12 +317,11 @@ namespace Com.OursPrivacy.Api
         /// </summary>
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
         /// <param name="identifyRequest"></param>
-        private void OnErrorIdentifyDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, IdentifyRequest identifyRequest)
+        private void OnErrorIdentifyDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, IdentifyRequest identifyRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorIdentify(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, identifyRequest);
+            OnErrorIdentify(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, identifyRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -295,9 +332,8 @@ namespace Com.OursPrivacy.Api
         /// <param name="suppressDefaultLogLocalVar"></param>
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
         /// <param name="identifyRequest"></param>
-        partial void OnErrorIdentify(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, IdentifyRequest identifyRequest);
+        partial void OnErrorIdentify(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, IdentifyRequest identifyRequest);
 
         /// <summary>
         /// Identify Users Add user properties to an existing user&#39;s profile.
@@ -326,26 +362,25 @@ namespace Com.OursPrivacy.Api
         /// <returns><see cref="Task"/>&lt;<see cref="IIdentifyApiResponse"/>&gt;</returns>
         public async Task<IIdentifyApiResponse> IdentifyAsync(IdentifyRequest identifyRequest, System.Threading.CancellationToken cancellationToken = default)
         {
-            UriBuilder uriBuilderLocalVar = new UriBuilder();
-
             try
             {
                 ValidateIdentify(identifyRequest);
-
                 FormatIdentify(identifyRequest);
+
+                // Ensure the token is set
+                if (string.IsNullOrEmpty(identifyRequest.Token))
+                {
+                    identifyRequest.Token = _apiKey;
+                }
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
-                    Uri urlLocalVar = httpRequestMessageLocalVar.RequestUri = new Uri("https://api.oursprivacy.com/api/v1");
-                    uriBuilderLocalVar.Host = urlLocalVar.Authority;
-                    uriBuilderLocalVar.Scheme = urlLocalVar.Scheme;
-                    uriBuilderLocalVar.Path = urlLocalVar.AbsolutePath;
+                    // Use relative URI, HttpClient.BaseAddress will be used
+                    httpRequestMessageLocalVar.RequestUri = new Uri("/api/v1/identify", UriKind.Relative);
 
                     httpRequestMessageLocalVar.Content = (identifyRequest as object) is System.IO.Stream stream
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(identifyRequest, _jsonSerializerOptions));
-
-                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
                     string[] contentTypes = new string[] {
                         "application/json"
@@ -387,7 +422,7 @@ namespace Com.OursPrivacy.Api
             }
             catch(Exception e)
             {
-                OnErrorIdentifyDefaultImplementation(e, "/identify", uriBuilderLocalVar.Path, identifyRequest);
+                OnErrorIdentifyDefaultImplementation(e, "/identify", identifyRequest);
                 Events.ExecuteOnErrorIdentify(e);
                 throw;
             }
@@ -431,11 +466,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? Ok()
+            public Com.OursPrivacy.Model.Api200Response? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -444,7 +479,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryOk([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -469,11 +504,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 400 BadRequest
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? BadRequest()
+            public Com.OursPrivacy.Model.Api200Response? BadRequest()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsBadRequest
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -482,7 +517,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryBadRequest([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -507,11 +542,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 401 Unauthorized
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? Unauthorized()
+            public Com.OursPrivacy.Model.Api200Response? Unauthorized()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsUnauthorized
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -520,7 +555,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryUnauthorized([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryUnauthorized([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -545,11 +580,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 429 TooManyRequests
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? TooManyRequests()
+            public Com.OursPrivacy.Model.Api200Response? TooManyRequests()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsTooManyRequests
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -558,7 +593,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryTooManyRequests([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryTooManyRequests([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -583,11 +618,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 500 InternalServerError
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? InternalServerError()
+            public Com.OursPrivacy.Model.Api200Response? InternalServerError()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsInternalServerError
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -596,7 +631,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryInternalServerError([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryInternalServerError([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -661,12 +696,11 @@ namespace Com.OursPrivacy.Api
         /// </summary>
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
         /// <param name="trackRequest"></param>
-        private void OnErrorTrackDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, TrackRequest trackRequest)
+        private void OnErrorTrackDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, TrackRequest trackRequest)
         {
             bool suppressDefaultLogLocalVar = false;
-            OnErrorTrack(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, trackRequest);
+            OnErrorTrack(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, trackRequest);
             if (!suppressDefaultLogLocalVar)
                 Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
         }
@@ -677,9 +711,8 @@ namespace Com.OursPrivacy.Api
         /// <param name="suppressDefaultLogLocalVar"></param>
         /// <param name="exceptionLocalVar"></param>
         /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
         /// <param name="trackRequest"></param>
-        partial void OnErrorTrack(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, TrackRequest trackRequest);
+        partial void OnErrorTrack(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, TrackRequest trackRequest);
 
         /// <summary>
         /// Track Events Track events from your server. Please include at least one of: userId, externalId, or email. These properties help us associate events with existing users. For all fields, null values unset the property and undefined values do not unset existing properties.
@@ -708,26 +741,25 @@ namespace Com.OursPrivacy.Api
         /// <returns><see cref="Task"/>&lt;<see cref="ITrackApiResponse"/>&gt;</returns>
         public async Task<ITrackApiResponse> TrackAsync(TrackRequest trackRequest, System.Threading.CancellationToken cancellationToken = default)
         {
-            UriBuilder uriBuilderLocalVar = new UriBuilder();
-
             try
             {
                 ValidateTrack(trackRequest);
-
                 FormatTrack(trackRequest);
+
+                // Ensure the token is set
+                if (string.IsNullOrEmpty(trackRequest.Token))
+                {
+                    trackRequest.Token = _apiKey;
+                }
 
                 using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
                 {
-                    Uri urlLocalVar = httpRequestMessageLocalVar.RequestUri = new Uri("https://api.oursprivacy.com/api/v1");
-                    uriBuilderLocalVar.Host = urlLocalVar.Authority;
-                    uriBuilderLocalVar.Scheme = urlLocalVar.Scheme;
-                    uriBuilderLocalVar.Path = urlLocalVar.AbsolutePath;
+                    // Use relative URI, HttpClient.BaseAddress will be used
+                    httpRequestMessageLocalVar.RequestUri = new Uri("/api/v1/track", UriKind.Relative);
 
                     httpRequestMessageLocalVar.Content = (trackRequest as object) is System.IO.Stream stream
                         ? httpRequestMessageLocalVar.Content = new StreamContent(stream)
                         : httpRequestMessageLocalVar.Content = new StringContent(JsonSerializer.Serialize(trackRequest, _jsonSerializerOptions));
-
-                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
 
                     string[] contentTypes = new string[] {
                         "application/json"
@@ -769,7 +801,7 @@ namespace Com.OursPrivacy.Api
             }
             catch(Exception e)
             {
-                OnErrorTrackDefaultImplementation(e, "/track", uriBuilderLocalVar.Path, trackRequest);
+                OnErrorTrackDefaultImplementation(e, "/track", trackRequest);
                 Events.ExecuteOnErrorTrack(e);
                 throw;
             }
@@ -813,11 +845,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? Ok()
+            public Com.OursPrivacy.Model.Api200Response? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -826,7 +858,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryOk([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -851,11 +883,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 400 BadRequest
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? BadRequest()
+            public Com.OursPrivacy.Model.Api200Response? BadRequest()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsBadRequest
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -864,7 +896,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryBadRequest([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -889,11 +921,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 401 Unauthorized
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? Unauthorized()
+            public Com.OursPrivacy.Model.Api200Response? Unauthorized()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsUnauthorized
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -902,7 +934,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryUnauthorized([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryUnauthorized([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -927,11 +959,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 429 TooManyRequests
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? TooManyRequests()
+            public Com.OursPrivacy.Model.Api200Response? TooManyRequests()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsTooManyRequests
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -940,7 +972,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryTooManyRequests([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryTooManyRequests([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -965,11 +997,11 @@ namespace Com.OursPrivacy.Api
             /// Deserializes the response if the response is 500 InternalServerError
             /// </summary>
             /// <returns></returns>
-            public Com.OursPrivacy.Model.Track200Response? InternalServerError()
+            public Com.OursPrivacy.Model.Api200Response? InternalServerError()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsInternalServerError
-                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Track200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<Com.OursPrivacy.Model.Api200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -978,7 +1010,7 @@ namespace Com.OursPrivacy.Api
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryInternalServerError([NotNullWhen(true)]out Com.OursPrivacy.Model.Track200Response? result)
+            public bool TryInternalServerError([NotNullWhen(true)]out Com.OursPrivacy.Model.Api200Response? result)
             {
                 result = null;
 
@@ -1003,5 +1035,32 @@ namespace Com.OursPrivacy.Api
 
             partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
+
+        /// <summary>
+        /// Enqueue an IdentifyRequest for batching. Will be sent according to batch config.
+        /// </summary>
+        public void EnqueueIdentify(IdentifyRequest identifyRequest)
+        {
+            _eventBatch.EnqueueEvent(identifyRequest);
+        }
+
+        /// <summary>
+        /// Enqueue a TrackRequest for batching. Will be sent according to batch config.
+        /// </summary>
+        public void EnqueueTrack(TrackRequest trackRequest)
+        {
+            _eventBatch.EnqueueEvent(trackRequest);
+        }
+
+        /// <summary>
+        /// Manually flush the event queue.
+        /// </summary>
+        public void FlushEventQueue() => _eventBatch.Flush();
+
+
+        /// <summary>
+        /// Manually flush the event queue.
+        /// </summary>
+        public async Task FlushEventQueueAsync() => await _eventBatch.FlushAsync();
     }
 }

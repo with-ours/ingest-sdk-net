@@ -28,14 +28,14 @@ namespace Com.OursPrivacy.Model
     /// <summary>
     /// Track200Response
     /// </summary>
-    public partial class Track200Response : IValidatableObject
+    public partial class Api200Response : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Track200Response" /> class.
+        /// Initializes a new instance of the <see cref="Api200Response" /> class.
         /// </summary>
         /// <param name="success">success</param>
         [JsonConstructor]
-        public Track200Response(bool success)
+        public Api200Response(bool success)
         {
             Success = success;
             OnCreated();
@@ -74,19 +74,19 @@ namespace Com.OursPrivacy.Model
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="Track200Response" />
+    /// A Json converter for type <see cref="Api200Response" />
     /// </summary>
-    public class Track200ResponseJsonConverter : JsonConverter<Track200Response>
+    public class Track200ResponseJsonConverter : JsonConverter<Api200Response>
     {
         /// <summary>
-        /// Deserializes json to <see cref="Track200Response" />
+        /// Deserializes json to <see cref="Api200Response" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override Track200Response Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override Api200Response Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -127,17 +127,17 @@ namespace Com.OursPrivacy.Model
             if (success.IsSet && success.Value == null)
                 throw new ArgumentNullException(nameof(success), "Property is not nullable for class Track200Response.");
 
-            return new Track200Response(success.Value!.Value!);
+            return new Api200Response(success.Value!.Value!);
         }
 
         /// <summary>
-        /// Serializes a <see cref="Track200Response" />
+        /// Serializes a <see cref="Api200Response" />
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="track200Response"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, Track200Response track200Response, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, Api200Response track200Response, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
@@ -146,13 +146,13 @@ namespace Com.OursPrivacy.Model
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="Track200Response" />
+        /// Serializes the properties of <see cref="Api200Response" />
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="track200Response"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, Track200Response track200Response, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, Api200Response track200Response, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteBoolean("success", track200Response.Success);
         }

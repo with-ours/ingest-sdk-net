@@ -25,13 +25,13 @@ namespace Com.OursPrivacy.Extensions
         /// Add the api to your host builder.
         /// </summary>
         /// <param name="builder"></param>
-        public static IHostBuilder ConfigureApi(this IHostBuilder builder)
+        public static IHostBuilder ConfigureOursPrivacy(this IHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => 
             {
                 HostConfiguration config = new HostConfiguration(services);
 
-                IServiceCollectionExtensions.AddApi(services, config);
+                IServiceCollectionExtensions.AddOursPrivacyApi(services, config);
             });
 
             return builder;
@@ -42,7 +42,7 @@ namespace Com.OursPrivacy.Extensions
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="options"></param>
-        public static IHostBuilder ConfigureApi(this IHostBuilder builder, Action<HostBuilderContext, IServiceCollection, HostConfiguration> options)
+        public static IHostBuilder ConfigureOursPrivacy(this IHostBuilder builder, Action<HostBuilderContext, IServiceCollection, HostConfiguration> options)
         {
             builder.ConfigureServices((context, services) => 
             {
@@ -50,7 +50,7 @@ namespace Com.OursPrivacy.Extensions
 
                 options(context, services, config);
 
-                IServiceCollectionExtensions.AddApi(services, config);
+                IServiceCollectionExtensions.AddOursPrivacyApi(services, config);
             });
 
             return builder;

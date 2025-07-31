@@ -25,14 +25,14 @@ namespace Com.OursPrivacy.Test.Api
     public class DependencyInjectionTest
     {
         private readonly IHost _hostUsingConfigureWithoutAClient =
-            Host.CreateDefaultBuilder([]).ConfigureApi((context, services, options) =>
+            Host.CreateDefaultBuilder([]).ConfigureOursPrivacy((context, services, options) =>
             {
 
             })
             .Build();
 
         private readonly IHost _hostUsingConfigureWithAClient =
-            Host.CreateDefaultBuilder([]).ConfigureApi((context, services, options) =>
+            Host.CreateDefaultBuilder([]).ConfigureOursPrivacy((context, services, options) =>
             {
 
                 options.AddApiHttpClients(client => client.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS));
@@ -42,7 +42,7 @@ namespace Com.OursPrivacy.Test.Api
         private readonly IHost _hostUsingAddWithoutAClient =
             Host.CreateDefaultBuilder([]).ConfigureServices((host, services) =>
             {
-                services.AddApi(options =>
+                services.AddOursPrivacyApi(options =>
                 {
 
                 });
@@ -52,7 +52,7 @@ namespace Com.OursPrivacy.Test.Api
         private readonly IHost _hostUsingAddWithAClient =
             Host.CreateDefaultBuilder([]).ConfigureServices((host, services) =>
             {
-                services.AddApi(options =>
+                services.AddOursPrivacyApi(options =>
                 {
 
                     options.AddApiHttpClients(client => client.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS));

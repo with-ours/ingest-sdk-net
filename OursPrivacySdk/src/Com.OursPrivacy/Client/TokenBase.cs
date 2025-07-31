@@ -3,6 +3,9 @@
 #nullable enable
 
 using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Com.OursPrivacy.Client
 {
@@ -28,11 +31,9 @@ namespace Com.OursPrivacy.Client
         internal TokenBase(TimeSpan? timeout = null)
         {
             Timeout = timeout;
-            
             if (Timeout != null)
                 StartTimer(Timeout.Value);
         }
-
 
         /// <summary>
         /// Starts the token's timer
