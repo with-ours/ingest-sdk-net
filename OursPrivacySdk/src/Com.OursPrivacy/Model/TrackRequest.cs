@@ -34,7 +34,6 @@ namespace Com.OursPrivacy.Model
         /// Initializes a new instance of the <see cref="TrackRequest" /> class.
         /// </summary>
         /// <param name="event">The name of the event you&#39;re tracking. This must be whitelisted in the Ours dashboard.</param>
-        /// <param name="token">The token for your Ours Privacy Source. You can find this in the Ours dashboard.</param>
         /// <param name="time">The time at which the event occurred, in seconds or milliseconds since UTC epoch. The time must be in the past and within the last 7 days.</param>
         /// <param name="userId">The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.</param>
         /// <param name="externalId">The externalId (the ID in your system) of a user. We will associate this event with the user or create a user. If included in the request, email lookup is ignored.</param>
@@ -44,10 +43,9 @@ namespace Com.OursPrivacy.Model
         /// <param name="defaultProperties">defaultProperties</param>
         /// <param name="distinctId">A unique identifier for the event. This helps prevent duplicate events.</param>
         [JsonConstructor]
-        public TrackRequest(string @event, string token, Option<decimal?> time = default, Option<string?> userId = default, Option<string?> externalId = default, Option<string?> email = default, Option<Dictionary<string, Object>?> eventProperties = default, Option<TrackRequestUserProperties?> userProperties = default, Option<TrackRequestDefaultProperties?> defaultProperties = default, Option<string?> distinctId = default)
+        public TrackRequest(string @event, Option<decimal?> time = default, Option<string?> userId = default, Option<string?> externalId = default, Option<string?> email = default, Option<Dictionary<string, Object>?> eventProperties = default, Option<TrackRequestUserProperties?> userProperties = default, Option<TrackRequestDefaultProperties?> defaultProperties = default, Option<string?> distinctId = default)
         {
             Event = @event;
-            Token = token;
             TimeOption = time;
             UserIdOption = userId;
             ExternalIdOption = externalId;
@@ -73,7 +71,7 @@ namespace Com.OursPrivacy.Model
         /// </summary>
         /// <value>The token for your Ours Privacy Source. You can find this in the Ours dashboard.</value>
         [JsonPropertyName("token")]
-        public string Token { get; set; }
+        internal string? Token { get; set; }
 
         /// <summary>
         /// Used to track the state of Time
@@ -194,7 +192,6 @@ namespace Com.OursPrivacy.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class TrackRequest {\n");
             sb.Append("  Event: ").Append(Event).Append("\n");
-            sb.Append("  Token: ").Append(Token).Append("\n");
             sb.Append("  Time: ").Append(Time).Append("\n");
             sb.Append("  UserId: ").Append(UserId).Append("\n");
             sb.Append("  ExternalId: ").Append(ExternalId).Append("\n");
@@ -224,18 +221,6 @@ namespace Com.OursPrivacy.Model
             if (this.Event != null && this.Event.Length < 1)
             {
                 yield return new ValidationResult("Invalid value for Event, length must be greater than 1.", new [] { "Event" });
-            }
-
-            // Token (string) maxLength
-            if (this.Token != null && this.Token.Length > 250)
-            {
-                yield return new ValidationResult("Invalid value for Token, length must be less than 250.", new [] { "Token" });
-            }
-
-            // Token (string) minLength
-            if (this.Token != null && this.Token.Length < 1)
-            {
-                yield return new ValidationResult("Invalid value for Token, length must be greater than 1.", new [] { "Token" });
             }
 
             // UserId (string) maxLength
@@ -313,7 +298,6 @@ namespace Com.OursPrivacy.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> varEvent = default;
-            Option<string?> token = default;
             Option<decimal?> time = default;
             Option<string?> userId = default;
             Option<string?> externalId = default;
@@ -340,9 +324,6 @@ namespace Com.OursPrivacy.Model
                     {
                         case "event":
                             varEvent = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "token":
-                            token = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "time":
                             time = new Option<decimal?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (decimal?)null : utf8JsonReader.GetDecimal());
@@ -377,16 +358,10 @@ namespace Com.OursPrivacy.Model
             if (!varEvent.IsSet)
                 throw new ArgumentException("Property is required for class TrackRequest.", nameof(varEvent));
 
-            if (!token.IsSet)
-                throw new ArgumentException("Property is required for class TrackRequest.", nameof(token));
-
             if (varEvent.IsSet && varEvent.Value == null)
                 throw new ArgumentNullException(nameof(varEvent), "Property is not nullable for class TrackRequest.");
 
-            if (token.IsSet && token.Value == null)
-                throw new ArgumentNullException(nameof(token), "Property is not nullable for class TrackRequest.");
-
-            return new TrackRequest(varEvent.Value!, token.Value!, time, userId, externalId, email, eventProperties, userProperties, defaultProperties, distinctId);
+            return new TrackRequest(varEvent.Value!, time, userId, externalId, email, eventProperties, userProperties, defaultProperties, distinctId);
         }
 
         /// <summary>

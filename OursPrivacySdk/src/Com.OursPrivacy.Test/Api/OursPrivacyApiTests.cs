@@ -8,10 +8,8 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.DependencyInjection;
 using Com.OursPrivacy.Api;
 using Com.OursPrivacy.Model;
 
@@ -43,35 +41,156 @@ namespace Com.OursPrivacy.Test.Api
     /// </summary>
     public sealed class OursPrivacyApiTests : ApiTestsBase
     {
-        private readonly IOursPrivacyApi _instance;
-
-        public OursPrivacyApiTests(): base(Array.Empty<string>())
+        public OursPrivacyApiTests() : base(Array.Empty<string>())
         {
-            _instance = _host.Services.GetRequiredService<IOursPrivacyApi>();
+            
         }
 
         /// <summary>
         /// Test Identify
         /// </summary>
-        [Fact (Skip = "not implemented")]
+        [Fact]
         public async Task IdentifyAsyncTest()
         {
-            IdentifyRequest identifyRequest = default!;
+            IdentifyRequest identifyRequest = new IdentifyRequest("UserId", new IdentifyRequestUserProperties(), default);
             var response = await _instance.IdentifyAsync(identifyRequest);
             var model = response.Ok();
-            Assert.IsType<Track200Response>(model);
+            Assert.IsType<Api200Response>(model);
         }
 
         /// <summary>
         /// Test Track
         /// </summary>
-        [Fact (Skip = "not implemented")]
+        [Fact]
         public async Task TrackAsyncTest()
         {
-            TrackRequest trackRequest = default!;
+            TrackRequest trackRequest = new TrackRequest("Event");
             var response = await _instance.TrackAsync(trackRequest);
             var model = response.Ok();
-            Assert.IsType<Track200Response>(model);
+            Assert.IsType<Api200Response>(model);
+        }
+
+        /// <summary>
+        /// Test batching for Identify and Track
+        /// </summary>
+        [Fact]
+        public async Task Batching_Enqueue_And_Flush_Works()
+        {
+            // Arrange
+            var identify = new IdentifyRequest(
+                userId: "user-1",
+                userProperties: new IdentifyRequestUserProperties(),
+                defaultProperties: default
+            );
+            var track = new TrackRequest(
+                @event: "test-event",
+                time: default,
+                userId: default,
+                externalId: default,
+                email: default,
+                eventProperties: default,
+                userProperties: default,
+                defaultProperties: default,
+                distinctId: default
+            );
+
+            var api = (OursPrivacyApi)_instance;
+            int identifyCount = 0;
+            int trackCount = 0;
+            api.Events.OnIdentify += (s, e) => identifyCount++;
+            api.Events.OnTrack += (s, e) => trackCount++;
+
+            api.EnqueueIdentify(identify);
+            api.EnqueueTrack(track);
+            await api.FlushEventQueueAsync();
+            await Task.Delay(500); // adjust as needed for batching config
+            Assert.Equal(1, identifyCount);
+            Assert.Equal(1, trackCount);
+        }
+
+        [Fact]
+        public async Task Batching_Timer_Processes_Multiple_Batches()
+        {
+            // Arrange: get batching config (default or from HostConfiguration)
+            var api = (OursPrivacyApi)_instance;
+            int batchSize = 2;
+            TimeSpan waitTime = TimeSpan.FromSeconds(1);
+
+            // Use reflection to set batch size and wait time for the test
+            var batchingTokenField = typeof(OursPrivacyApi).GetField("_eventBatch", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var batchingToken = batchingTokenField?.GetValue(api);
+            var batchSizeField = batchingToken?.GetType().GetField("_batchSize", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.FlattenHierarchy);
+            var batchTimerField = batchingToken?.GetType().GetField("_batchTimer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.FlattenHierarchy);
+            batchSizeField?.SetValue(batchingToken, batchSize);
+            batchTimerField?.SetValue(batchingToken, new System.Timers.Timer(waitTime.TotalMilliseconds));
+
+            int identifyCount = 0;
+            int trackCount = 0;
+            api.Events.OnIdentify += (s, e) => identifyCount++;
+            api.Events.OnTrack += (s, e) => trackCount++;
+
+            // First batch
+            var identify1 = new IdentifyRequest("user-batch1-1", new IdentifyRequestUserProperties(), default);
+            var track1 = new TrackRequest("event-batch1-2", default, default, default, default, default, default, default, default);
+            api.EnqueueIdentify(identify1);
+            api.EnqueueTrack(track1);
+
+            Assert.Equal(0, identifyCount);
+            Assert.Equal(0, trackCount);
+
+            // Wait for timer to process first batch
+            await Task.Delay(waitTime + TimeSpan.FromMilliseconds(500));
+
+            Assert.Equal(1, identifyCount);
+            Assert.Equal(1, trackCount);
+
+            // Second batch
+            var identify2 = new IdentifyRequest("user-batch2-1", new IdentifyRequestUserProperties(), default);
+            var track2 = new TrackRequest("event-batch2-2", default, default, default, default, default, default, default, default);
+            api.EnqueueIdentify(identify2);
+            api.EnqueueTrack(track2);
+            // Wait for timer to process second batch
+            await Task.Delay(waitTime + TimeSpan.FromMilliseconds(500));
+
+            Assert.Equal(2, identifyCount);
+            Assert.Equal(2, trackCount);
+        }
+
+        [Fact]
+        public async Task Batching_QueueLimit_Processes_Batch()
+        {
+            // Arrange: set a small batch size and a long wait time to ensure queue limit triggers first
+            var api = (OursPrivacyApi)_instance;
+            int batchSize = 2;
+            TimeSpan waitTime = TimeSpan.FromSeconds(10); // Long wait time so timer does not trigger
+
+            // Use reflection to set batch size and wait time for the test
+            var batchingTokenField = typeof(OursPrivacyApi).GetField("_eventBatch", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var batchingToken = batchingTokenField?.GetValue(api);
+            var batchSizeField = batchingToken?.GetType().GetField("_batchSize", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var maxWaitTimeField = batchingToken?.GetType().GetField("_maxWaitTime", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            batchSizeField?.SetValue(batchingToken, batchSize);
+            maxWaitTimeField?.SetValue(batchingToken, waitTime);
+
+            int identifyCount = 0;
+            int trackCount = 0;
+            api.Events.OnIdentify += (s, e) => identifyCount++;
+            api.Events.OnTrack += (s, e) => trackCount++;
+
+            // Enqueue up to the batch size
+            var identify1 = new IdentifyRequest("user-queue-1", new IdentifyRequestUserProperties(), default);
+            var track1 = new TrackRequest("event-queue-2", default, default, default, default, default, default, default, default);
+            api.EnqueueIdentify(identify1);
+            api.EnqueueTrack(track1);
+
+            Assert.Equal(0, identifyCount);
+            Assert.Equal(0, trackCount);
+
+            // Wait a short time to allow the queue limit to trigger (should be much less than waitTime)
+            await Task.Delay(500);
+
+            Assert.Equal(1, identifyCount);
+            Assert.Equal(1, trackCount);
         }
     }
 }

@@ -1,9 +1,37 @@
+using Com.OursPrivacy.Api;
+using Com.OursPrivacy.Client;
+using Com.OursPrivacy.Model;
+using Com.OursPrivacy.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Antiforgery;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAntiforgery();
+builder.Services.AddRazorPages();
+
+// Load API key from configuration
+var apiKey = builder.Configuration["OursPrivacy:ApiKey"] ?? throw new InvalidOperationException("OursPrivacy:ApiKey is not configured.");
+
+// Register OursPrivacyApi dependencies
+builder.Host.ConfigureOursPrivacy((context, services, options) =>
+{
+    options.ConfigureApiKey(apiKey);
+    options.AddApiHttpClients(client =>
+    {
+        client.BaseAddress = new Uri("https://dev-api.oursprivacy.com/");
+    }, builder =>
+    {
+        builder
+            .AddRetryPolicy(2)
+            .AddTimeoutPolicy(TimeSpan.FromSeconds(5))
+            .AddCircuitBreakerPolicy(10, TimeSpan.FromSeconds(30));
+    });
+    options.AddEventBatch(2, TimeSpan.FromSeconds(10));
+});
 
 var app = builder.Build();
 
@@ -15,30 +43,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.UseAntiforgery();
+app.UseStaticFiles(); // To serve Bootstrap and other static files
+app.UseRouting();
+app.UseAuthorization();
+app.MapRazorPages(); // Add this line
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

@@ -362,5 +362,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # OursPrivacy ExampleApp local config
-/src/Com.OursPrivacy.ExampleApp/appsettings.Development.json
-/src/Com.OursPrivacy.ExampleApp/appsettings.Local.json
+/src/*/appsettings.Development.json
+/src/*/appsettings.Local.json

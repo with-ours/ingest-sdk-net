@@ -1,102 +1,123 @@
-# Created with Openapi Generator
+# Com.OursPrivacy SDK
 
-<a id="cli"></a>
-## Creating the library
-Create a config.yaml file similar to what is below, then run the following powershell command to generate the library `java -jar "<path>/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar" generate -c config.yaml`
+## Usage
 
-```yaml
-generatorName: csharp
-inputSpec: ./swagger.json
-outputDir: out
+### Registering Your API Key
 
-# https://openapi-generator.tech/docs/generators/csharp
-additionalProperties:
-  packageGuid: 'fe562c1d-d0e1-4c13-b051-ddf3707fb8a2'
+Before making API calls, register your API key(s) using the provided DI helpers.  
+**Recommended:** Load your API key from configuration.
 
-# https://openapi-generator.tech/docs/integrations/#github-integration
-# gitHost:
-# gitUserId:
-# gitRepoId:
+```csharp
+// In your Program.cs or Startup.cs
+var apiKey = builder.Configuration["OursPrivacy:ApiKey"] 
+    ?? throw new InvalidOperationException("OursPrivacy:ApiKey is not configured.");
 
-# https://openapi-generator.tech/docs/globals
-# globalProperties:
-
-# https://openapi-generator.tech/docs/customization/#inline-schema-naming
-# inlineSchemaOptions:
-
-# https://openapi-generator.tech/docs/customization/#name-mapping
-# modelNameMappings:
-# nameMappings:
-
-# https://openapi-generator.tech/docs/customization/#openapi-normalizer
-# openapiNormalizer:
-
-# templateDir: https://openapi-generator.tech/docs/templating/#modifying-templates
-
-# releaseNote:
+builder.Host.ConfigureOursPrivacy((context, services, options) =>
+{
+    options.ConfigureApiKey(apiKey);
+    // ...other configuration...
+});
 ```
 
-<a id="usage"></a>
-## Using the library in your project
+---
 
-```cs
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+### Configuring Batching
+
+Configure batch size and timer. Batches will send when the batch size or timer is reached.
+
+Note: `EnqueueIdentify` and `EnqueueTrack` must be used to utilize batching.
+
+```csharp
+options.AddEventBatch(
+    batchSize: 2, // Number of events before sending
+    maxWaitTime: TimeSpan.FromSeconds(10) // Max time to wait before sending
+);
+```
+
+---
+
+### Configuring HttpClient Policies
+
+You can add Polly policies and other middleware to the API HttpClient:
+
+```csharp
+options.AddApiHttpClients(client =>
+{
+    client.BaseAddress = new Uri("https://dev-api.oursprivacy.com/");
+}, builder =>
+{
+    builder
+        .AddRetryPolicy(2)
+        .AddTimeoutPolicy(TimeSpan.FromSeconds(5))
+        .AddCircuitBreakerPolicy(10, TimeSpan.FromSeconds(30));
+});
+```
+
+---
+
+### Using the library in your project
+
+```csharp
 using Com.OursPrivacy.Api;
 using Com.OursPrivacy.Client;
 using Com.OursPrivacy.Model;
-using Org.OpenAPITools.Extensions;
+using Microsoft.Extensions.Hosting;
 
-namespace YourProject
+var builder = WebApplication.CreateBuilder(args);
+
+// Load API key from configuration
+var apiKey = builder.Configuration["OursPrivacy:ApiKey"] 
+    ?? throw new InvalidOperationException("OursPrivacy:ApiKey is not configured.");
+
+// Register OursPrivacyApi dependencies
+builder.Host.ConfigureOursPrivacy((context, services, options) =>
 {
-    public class Program
+    options.ConfigureApiKey(apiKey);
+    options.AddApiHttpClients(client =>
     {
-        public static async Task Main(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
-            var api = host.Services.GetRequiredService<IOursPrivacyApi>();
-            IIdentifyApiResponse apiResponse = await api.IdentifyAsync("todo");
-            Track200Response? model = apiResponse.Ok();
-        }
+      // HttpClient configurations here
+    }, builder =>
+    {
+        builder
+            .AddRetryPolicy(2)
+            .AddTimeoutPolicy(TimeSpan.FromSeconds(5))
+            .AddCircuitBreakerPolicy(10, TimeSpan.FromSeconds(30));
+    });
+    options.AddEventBatch(2, TimeSpan.FromSeconds(10));
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-          .ConfigureApi((context, services, options) =>
-          {
-              options.ConfigureJsonOptions((jsonOptions) =>
-              {
-                  // your custom converters if any
-              });
+var app = builder.Build();
 
-              options.AddApiHttpClients(client =>
-              {
-                  // client configuration
-              }, builder =>
-              {
-                  builder
-                      .AddRetryPolicy(2)
-                      .AddTimeoutPolicy(TimeSpan.FromSeconds(5))
-                      .AddCircuitBreakerPolicy(10, TimeSpan.FromSeconds(30));
-                      // add whatever middleware you prefer
-                  }
-              );
-          });
-    }
-}
+var api = app.Services.GetRequiredService<IOursPrivacyApi>();
+
+// Example: Identify request with queue and batching
+var identifyRequest = new IdentifyRequest(
+    userId: "user-123",
+    userProperties: new IdentifyRequestUserProperties { }
+);
+
+// Queues the request for batching
+api.EnqueueIdentify(identifyRequest);
+
+// Sends the request immediately without a queue or batching
+IIdentifyApiResponse apiResponse = await api.IdentifyAsync(identifyRequest);
 ```
-<a id="questions"></a>
+
+---
+
 ## Questions
 
-- What about HttpRequest failures and retries?
-  Configure Polly in the IHttpClientBuilder
-- How are tokens used?
-  Tokens are provided by a TokenProvider class. The default is RateLimitProvider which will perform client side rate limiting.
-  Other providers can be used with the UseProvider method.
-- Does an HttpRequest throw an error when the server response is not Ok?
-  It depends how you made the request. If the return type is ApiResponse<T> no error will be thrown, though the Content property will be null.
-  StatusCode and ReasonPhrase will contain information about the error.
-  If the return type is T, then it will throw. If the return type is TOrDefault, it will return null.
-- How do I validate requests and process responses?
-  Use the provided On and After partial methods in the api classes.
+- **What about HttpRequest failures and retries?**  
+  Configure Polly in the IHttpClientBuilder as shown above.
+
+- **Does an HttpRequest throw an error when the server response is not Ok?**  
+  If the return type is `ApiResponse<T>`, no error will be thrown; check the `StatusCode` and `ReasonPhrase`.  
+  If the return type is `T`, an exception will be thrown for non-success responses.
+
+- **How do I validate requests and process responses?**  
+  Use the provided `On` and `After` partial methods in the API classes.
+
+---
 
 ## Api Information
 - appName: Ours

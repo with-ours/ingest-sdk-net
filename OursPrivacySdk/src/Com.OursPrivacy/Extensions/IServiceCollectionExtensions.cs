@@ -25,10 +25,10 @@ namespace Com.OursPrivacy.Extensions
         /// Add the api to your host builder.
         /// </summary>
         /// <param name="services"></param>
-        public static void AddApi(this IServiceCollection services)
+        public static void AddOursPrivacyApi(this IServiceCollection services)
         {
             HostConfiguration config = new(services);
-            AddApi(services, config);
+            AddOursPrivacyApi(services, config);
         }
 
         /// <summary>
@@ -36,17 +36,20 @@ namespace Com.OursPrivacy.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <param name="options"></param>
-        public static void AddApi(this IServiceCollection services, Action<HostConfiguration> options)
+        public static void AddOursPrivacyApi(this IServiceCollection services, Action<HostConfiguration> options)
         {
             HostConfiguration config = new(services);
             options(config);
-            AddApi(services, config);
+            AddOursPrivacyApi(services, config);
         }
 
-        internal static void AddApi(IServiceCollection services, HostConfiguration host)
+        internal static void AddOursPrivacyApi(IServiceCollection services, HostConfiguration host)
         {
             if (!host.HttpClientsAdded)
                 host.AddApiHttpClients();
+
+            if (!host.EventBatchAdded)
+                host.AddEventBatch(30, TimeSpan.FromSeconds(30));
 
             services.AddSingleton<CookieContainer>();
 

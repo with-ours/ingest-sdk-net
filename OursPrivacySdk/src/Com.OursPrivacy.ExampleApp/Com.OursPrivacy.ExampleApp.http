@@ -1,6 +1,22 @@
 @Com.OursPrivacy.ExampleApp_HostAddress = http://localhost:5015
 
-GET {{Com.OursPrivacy.ExampleApp_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{Com.OursPrivacy.ExampleApp_HostAddress}}/
+Accept: text/html
+
+###
+
+POST {{Com.OursPrivacy.ExampleApp_HostAddress}}/identify
+Content-Type: application/x-www-form-urlencoded
+
+userId=test-user
+email=test@example.com
+
+###
+
+POST {{Com.OursPrivacy.ExampleApp_HostAddress}}/track
+Content-Type: application/x-www-form-urlencoded
+
+userId=test-user
+event=TestEvent
 
 ###

@@ -33,14 +33,12 @@ namespace Com.OursPrivacy.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentifyRequest" /> class.
         /// </summary>
-        /// <param name="token">The token for your Ours Privacy Source. You can find this in the Ours dashboard.</param>
         /// <param name="userId">The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.</param>
         /// <param name="userProperties">userProperties</param>
         /// <param name="defaultProperties">defaultProperties</param>
         [JsonConstructor]
-        public IdentifyRequest(string token, string userId, IdentifyRequestUserProperties userProperties, Option<TrackRequestDefaultProperties?> defaultProperties = default)
+        public IdentifyRequest(string userId, IdentifyRequestUserProperties userProperties, Option<TrackRequestDefaultProperties?> defaultProperties = default)
         {
-            Token = token;
             UserId = userId;
             UserProperties = userProperties;
             DefaultPropertiesOption = defaultProperties;
@@ -54,7 +52,7 @@ namespace Com.OursPrivacy.Model
         /// </summary>
         /// <value>The token for your Ours Privacy Source. You can find this in the Ours dashboard.</value>
         [JsonPropertyName("token")]
-        public string Token { get; set; }
+        internal string? Token { get; set; }
 
         /// <summary>
         /// The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.
@@ -90,7 +88,6 @@ namespace Com.OursPrivacy.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class IdentifyRequest {\n");
-            sb.Append("  Token: ").Append(Token).Append("\n");
             sb.Append("  UserId: ").Append(UserId).Append("\n");
             sb.Append("  UserProperties: ").Append(UserProperties).Append("\n");
             sb.Append("  DefaultProperties: ").Append(DefaultProperties).Append("\n");
@@ -105,18 +102,6 @@ namespace Com.OursPrivacy.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
-            // Token (string) maxLength
-            if (this.Token != null && this.Token.Length > 250)
-            {
-                yield return new ValidationResult("Invalid value for Token, length must be less than 250.", new [] { "Token" });
-            }
-
-            // Token (string) minLength
-            if (this.Token != null && this.Token.Length < 1)
-            {
-                yield return new ValidationResult("Invalid value for Token, length must be greater than 1.", new [] { "Token" });
-            }
-
             // UserId (string) maxLength
             if (this.UserId != null && this.UserId.Length > 400)
             {
@@ -155,7 +140,6 @@ namespace Com.OursPrivacy.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> token = default;
             Option<string?> userId = default;
             Option<IdentifyRequestUserProperties?> userProperties = default;
             Option<TrackRequestDefaultProperties?> defaultProperties = default;
@@ -175,9 +159,6 @@ namespace Com.OursPrivacy.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "token":
-                            token = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
                         case "userId":
                             userId = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
@@ -193,17 +174,11 @@ namespace Com.OursPrivacy.Model
                 }
             }
 
-            if (!token.IsSet)
-                throw new ArgumentException("Property is required for class IdentifyRequest.", nameof(token));
-
             if (!userId.IsSet)
                 throw new ArgumentException("Property is required for class IdentifyRequest.", nameof(userId));
 
             if (!userProperties.IsSet)
                 throw new ArgumentException("Property is required for class IdentifyRequest.", nameof(userProperties));
-
-            if (token.IsSet && token.Value == null)
-                throw new ArgumentNullException(nameof(token), "Property is not nullable for class IdentifyRequest.");
 
             if (userId.IsSet && userId.Value == null)
                 throw new ArgumentNullException(nameof(userId), "Property is not nullable for class IdentifyRequest.");
@@ -211,7 +186,7 @@ namespace Com.OursPrivacy.Model
             if (userProperties.IsSet && userProperties.Value == null)
                 throw new ArgumentNullException(nameof(userProperties), "Property is not nullable for class IdentifyRequest.");
 
-            return new IdentifyRequest(token.Value!, userId.Value!, userProperties.Value!, defaultProperties);
+            return new IdentifyRequest(userId.Value!, userProperties.Value!, defaultProperties);
         }
 
         /// <summary>

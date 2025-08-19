@@ -8,11 +8,10 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using Microsoft.Extensions.Hosting;
-using Com.OursPrivacy.Client;
 using Com.OursPrivacy.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Com.OursPrivacy.Api;
 
 
 /* *********************************************************************************
@@ -42,17 +41,27 @@ namespace Com.OursPrivacy.Test.Api
     /// </summary>
     public class ApiTestsBase
     {
+        protected readonly IOursPrivacyApi _instance;
         protected readonly IHost _host;
 
         public ApiTestsBase(string[] args)
         {
             _host = CreateHostBuilder(args).Build();
+            _instance = _host.Services.GetRequiredService<IOursPrivacyApi>();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-            .ConfigureApi((context, services, options) =>
+            .ConfigureOursPrivacy((context, services, options) =>
             {
-
+                options.ConfigureApiKey("Test_Key");
+                options.AddApiHttpClients(client =>
+                {
+                        client.BaseAddress = new Uri("https://mocked.oursprivacy.local/");
+                }, builder =>
+                {
+                    builder
+                        .ConfigurePrimaryHttpMessageHandler(() => new MockHttpMessageHandler());
+                });
             });
     }
 }

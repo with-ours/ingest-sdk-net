@@ -31,6 +31,8 @@ namespace Com.OursPrivacy.Client
 
         internal bool HttpClientsAdded { get; private set; }
 
+        internal bool EventBatchAdded { get; private set; }
+
         /// <summary>
         /// Instantiates the class 
         /// </summary>
@@ -53,6 +55,7 @@ namespace Com.OursPrivacy.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<OursPrivacyApiEvents>();
+            _services.AddSingleton(this);
         }
 
         /// <summary>
@@ -68,9 +71,7 @@ namespace Com.OursPrivacy.Client
             if (client == null)
                 client = c => c.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS);
 
-            List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
-
-            builders.Add(_services.AddHttpClient<IOursPrivacyApi, OursPrivacyApi>(client));
+            List<IHttpClientBuilder> builders = [_services.AddHttpClient<IOursPrivacyApi, OursPrivacyApi>(client)];
             
             if (builder != null)
                 foreach (IHttpClientBuilder instance in builders)
@@ -131,6 +132,41 @@ namespace Com.OursPrivacy.Client
             _services.AddSingleton<TTokenProvider>();
             _services.AddSingleton<TokenProvider<TTokenBase>>(services => services.GetRequiredService<TTokenProvider>());
 
+            return this;
+        }
+
+        /// <summary>
+        /// The token for your Ours Privacy Source. You can find this in the Ours dashboard.
+        /// </summary>
+        internal string ApiKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Add the token for your Ours Privacy Source. You can find this in the Ours dashboard.
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public HostConfiguration ConfigureApiKey(string apiKey)
+        {
+            ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey), "API key cannot be null or empty.");
+            return this;
+        }
+
+        /// <summary>
+        /// Configure batching options for all event types.
+        /// </summary>
+        public HostConfiguration AddEventBatch(int batchSize, TimeSpan maxWaitTime)
+        {
+            // Remove any existing EventBatch service to avoid duplicates
+            foreach (ServiceDescriptor service in _services)
+            {
+                if (service.ServiceType == typeof(EventBatch))
+                {
+                    _services.Remove(service);
+                }
+            }
+            _services.AddSingleton(sp => new EventBatch(sp, batchSize, maxWaitTime));
+            EventBatchAdded = true;
             return this;
         }
     }

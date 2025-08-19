@@ -1,10 +1,14 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.OursPrivacy", "src\Com.OursPrivacy\Com.OursPrivacy.csproj", "fe562c1d-d0e1-4c13-b051-ddf3707fb8a2"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.OursPrivacy.Test", "src\Com.OursPrivacy.Test\Com.OursPrivacy.Test.csproj", "{19F1DEBC-DE5E-4517-8062-F000CD499087}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4CF41E54-2DAB-4204-B10F-1A2A51F8D84E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.OursPrivacy.ExampleApp", "src\Com.OursPrivacy.ExampleApp\Com.OursPrivacy.ExampleApp.csproj", "{9C2473DF-066D-48ED-A1FF-813A91852CFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,8 +24,15 @@ Global
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2473DF-066D-48ED-A1FF-813A91852CFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2473DF-066D-48ED-A1FF-813A91852CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2473DF-066D-48ED-A1FF-813A91852CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2473DF-066D-48ED-A1FF-813A91852CFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9C2473DF-066D-48ED-A1FF-813A91852CFC} = {4CF41E54-2DAB-4204-B10F-1A2A51F8D84E}
 	EndGlobalSection
 EndGlobal
