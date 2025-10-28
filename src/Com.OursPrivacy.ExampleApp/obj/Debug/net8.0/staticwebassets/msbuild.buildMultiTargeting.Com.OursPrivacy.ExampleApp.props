@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Com.OursPrivacy.ExampleApp.props" />
+</Project>

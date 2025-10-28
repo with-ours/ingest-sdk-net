@@ -1,0 +1,3095 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Com.OursPrivacy</name>
+    </assembly>
+    <members>
+        <member name="T:Com.OursPrivacy.Api.IApi">
+            <summary>
+            Any Api client
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IApi.HttpClient">
+            <summary>
+            The HttpClient
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.IOursPrivacyApi">
+            <summary>
+            Represents a collection of functions to interact with the API endpoints
+            This class is registered as transient.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IOursPrivacyApi.Events">
+            <summary>
+            The class containing the events
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.IdentifyAsync(Com.OursPrivacy.Model.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identify Users
+            </summary>
+            <remarks>
+            Add user properties to an existing user&#39;s profile.
+            </remarks>
+            <exception cref="T:Com.OursPrivacy.Client.ApiException">Thrown when fails to make API call</exception>
+            <param name="identifyRequest">The payload to identify a user</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.IIdentifyApiResponse"/>&gt;</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.IdentifyOrDefaultAsync(Com.OursPrivacy.Model.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identify Users
+            </summary>
+            <remarks>
+            Add user properties to an existing user&#39;s profile.
+            </remarks>
+            <param name="identifyRequest">The payload to identify a user</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.IIdentifyApiResponse"/>?&gt;</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.TrackAsync(Com.OursPrivacy.Model.TrackRequest,System.Threading.CancellationToken)">
+            <summary>
+            Track Events
+            </summary>
+            <remarks>
+            Track events from your server. Please include at least one of: userId, externalId, or email. These properties help us associate events with existing users. For all fields, null values unset the property and undefined values do not unset existing properties.
+            </remarks>
+            <exception cref="T:Com.OursPrivacy.Client.ApiException">Thrown when fails to make API call</exception>
+            <param name="trackRequest">The payload to track an event</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.ITrackApiResponse"/>&gt;</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.TrackOrDefaultAsync(Com.OursPrivacy.Model.TrackRequest,System.Threading.CancellationToken)">
+            <summary>
+            Track Events
+            </summary>
+            <remarks>
+            Track events from your server. Please include at least one of: userId, externalId, or email. These properties help us associate events with existing users. For all fields, null values unset the property and undefined values do not unset existing properties.
+            </remarks>
+            <param name="trackRequest">The payload to track an event</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.ITrackApiResponse"/>?&gt;</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.EnqueueIdentify(Com.OursPrivacy.Model.IdentifyRequest)">
+            <summary>
+            Enqueue an IdentifyRequest for batching. Will be sent according to batch config.
+            </summary>
+            <param name="identifyRequest">The payload to identify a user</param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.EnqueueTrack(Com.OursPrivacy.Model.TrackRequest)">
+            <summary>
+            Enqueue a TrackRequest for batching. Will be sent according to batch config.
+            </summary>
+            <param name="trackRequest">The payload to track an event</param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.IOursPrivacyApi.FlushEventQueue">
+            <summary>
+            Manually flush the event queue.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.IIdentifyApiResponse">
+            <summary>
+            The <see cref="T:Com.OursPrivacy.Api.IIdentifyApiResponse"/>
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IIdentifyApiResponse.IsOk">
+            <summary>
+            Returns true if the response is 200 Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IIdentifyApiResponse.IsBadRequest">
+            <summary>
+            Returns true if the response is 400 BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IIdentifyApiResponse.IsUnauthorized">
+            <summary>
+            Returns true if the response is 401 Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IIdentifyApiResponse.IsTooManyRequests">
+            <summary>
+            Returns true if the response is 429 TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.IIdentifyApiResponse.IsInternalServerError">
+            <summary>
+            Returns true if the response is 500 InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.ITrackApiResponse">
+            <summary>
+            The <see cref="T:Com.OursPrivacy.Api.ITrackApiResponse"/>
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.ITrackApiResponse.IsOk">
+            <summary>
+            Returns true if the response is 200 Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.ITrackApiResponse.IsBadRequest">
+            <summary>
+            Returns true if the response is 400 BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.ITrackApiResponse.IsUnauthorized">
+            <summary>
+            Returns true if the response is 401 Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.ITrackApiResponse.IsTooManyRequests">
+            <summary>
+            Returns true if the response is 429 TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.ITrackApiResponse.IsInternalServerError">
+            <summary>
+            Returns true if the response is 500 InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.OursPrivacyApiEvents">
+            <summary>
+            Represents a collection of functions to interact with the API endpoints
+            </summary>
+        </member>
+        <member name="E:Com.OursPrivacy.Api.OursPrivacyApiEvents.OnIdentify">
+            <summary>
+            The event raised after the server response
+            </summary>
+        </member>
+        <member name="E:Com.OursPrivacy.Api.OursPrivacyApiEvents.OnErrorIdentify">
+            <summary>
+            The event raised after an error querying the server
+            </summary>
+        </member>
+        <member name="E:Com.OursPrivacy.Api.OursPrivacyApiEvents.OnTrack">
+            <summary>
+            The event raised after the server response
+            </summary>
+        </member>
+        <member name="E:Com.OursPrivacy.Api.OursPrivacyApiEvents.OnErrorTrack">
+            <summary>
+            The event raised after an error querying the server
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.OursPrivacyApi">
+            <summary>
+            Represents a collection of functions to interact with the API endpoints
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.LoggerFactory">
+            <summary>
+            The logger factory
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.Logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.HttpClient">
+            <summary>
+            The HttpClient
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.Events">
+            <summary>
+            The class containing the events
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.#ctor(Microsoft.Extensions.Logging.ILogger{Com.OursPrivacy.Api.OursPrivacyApi},Microsoft.Extensions.Logging.ILoggerFactory,System.Net.Http.HttpClient,Com.OursPrivacy.Client.JsonSerializerOptionsProvider,Com.OursPrivacy.Api.OursPrivacyApiEvents,Com.OursPrivacy.Client.HostConfiguration,Com.OursPrivacy.Client.EventBatch)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Api.OursPrivacyApi"/> class.
+            </summary>
+            <param name="logger"></param>
+            <param name="loggerFactory"></param>
+            <param name="httpClient"></param>
+            <param name="jsonSerializerOptionsProvider"></param>
+            <param name="oursPrivacyApiEvents"></param>
+            <param name="hostConfig">The host configuration for batching options</param>
+            <param name="eventBatch">The event batch for batching requests</param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.ValidateIdentify(Com.OursPrivacy.Model.IdentifyRequest)">
+            <summary>
+            Validates the request parameters
+            </summary>
+            <param name="identifyRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.AfterIdentifyDefaultImplementation(Com.OursPrivacy.Api.IIdentifyApiResponse,Com.OursPrivacy.Model.IdentifyRequest)">
+            <summary>
+            Processes the server response
+            </summary>
+            <param name="apiResponseLocalVar"></param>
+            <param name="identifyRequest"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.OnErrorIdentifyDefaultImplementation(System.Exception,System.String,Com.OursPrivacy.Model.IdentifyRequest)">
+            <summary>
+            Logs exceptions that occur while retrieving the server response
+            </summary>
+            <param name="exceptionLocalVar"></param>
+            <param name="pathFormatLocalVar"></param>
+            <param name="identifyRequest"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyOrDefaultAsync(Com.OursPrivacy.Model.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identify Users Add user properties to an existing user&#39;s profile.
+            </summary>
+            <param name="identifyRequest">The payload to identify a user</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.IIdentifyApiResponse"/>&gt;</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyAsync(Com.OursPrivacy.Model.IdentifyRequest,System.Threading.CancellationToken)">
+            <summary>
+            Identify Users Add user properties to an existing user&#39;s profile.
+            </summary>
+            <exception cref="T:Com.OursPrivacy.Client.ApiException">Thrown when fails to make API call</exception>
+            <param name="identifyRequest">The payload to identify a user</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.IIdentifyApiResponse"/>&gt;</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse">
+            <summary>
+            The <see cref="T:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse"/>
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.Logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.#ctor(Microsoft.Extensions.Logging.ILogger{Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse},System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.String,System.String,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            The <see cref="T:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse"/>
+            </summary>
+            <param name="logger"></param>
+            <param name="httpRequestMessage"></param>
+            <param name="httpResponseMessage"></param>
+            <param name="rawContent"></param>
+            <param name="path"></param>
+            <param name="requestedAt"></param>
+            <param name="jsonSerializerOptions"></param>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.IsOk">
+            <summary>
+            Returns true if the response is 200 Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.Ok">
+            <summary>
+            Deserializes the response if the response is 200 Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.TryOk(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 200 Ok and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.IsBadRequest">
+            <summary>
+            Returns true if the response is 400 BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.BadRequest">
+            <summary>
+            Deserializes the response if the response is 400 BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.TryBadRequest(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 400 BadRequest and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.IsUnauthorized">
+            <summary>
+            Returns true if the response is 401 Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.Unauthorized">
+            <summary>
+            Deserializes the response if the response is 401 Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.TryUnauthorized(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 401 Unauthorized and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.IsTooManyRequests">
+            <summary>
+            Returns true if the response is 429 TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.TooManyRequests">
+            <summary>
+            Deserializes the response if the response is 429 TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.TryTooManyRequests(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 429 TooManyRequests and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.IsInternalServerError">
+            <summary>
+            Returns true if the response is 500 InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.InternalServerError">
+            <summary>
+            Deserializes the response if the response is 500 InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.IdentifyApiResponse.TryInternalServerError(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 500 InternalServerError and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.ValidateTrack(Com.OursPrivacy.Model.TrackRequest)">
+            <summary>
+            Validates the request parameters
+            </summary>
+            <param name="trackRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.AfterTrackDefaultImplementation(Com.OursPrivacy.Api.ITrackApiResponse,Com.OursPrivacy.Model.TrackRequest)">
+            <summary>
+            Processes the server response
+            </summary>
+            <param name="apiResponseLocalVar"></param>
+            <param name="trackRequest"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.OnErrorTrackDefaultImplementation(System.Exception,System.String,Com.OursPrivacy.Model.TrackRequest)">
+            <summary>
+            Logs exceptions that occur while retrieving the server response
+            </summary>
+            <param name="exceptionLocalVar"></param>
+            <param name="pathFormatLocalVar"></param>
+            <param name="trackRequest"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackOrDefaultAsync(Com.OursPrivacy.Model.TrackRequest,System.Threading.CancellationToken)">
+            <summary>
+            Track Events Track events from your server. Please include at least one of: userId, externalId, or email. These properties help us associate events with existing users. For all fields, null values unset the property and undefined values do not unset existing properties.
+            </summary>
+            <param name="trackRequest">The payload to track an event</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.ITrackApiResponse"/>&gt;</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackAsync(Com.OursPrivacy.Model.TrackRequest,System.Threading.CancellationToken)">
+            <summary>
+            Track Events Track events from your server. Please include at least one of: userId, externalId, or email. These properties help us associate events with existing users. For all fields, null values unset the property and undefined values do not unset existing properties.
+            </summary>
+            <exception cref="T:Com.OursPrivacy.Client.ApiException">Thrown when fails to make API call</exception>
+            <param name="trackRequest">The payload to track an event</param>
+            <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>&lt;<see cref="T:Com.OursPrivacy.Api.ITrackApiResponse"/>&gt;</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse">
+            <summary>
+            The <see cref="T:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse"/>
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.Logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.#ctor(Microsoft.Extensions.Logging.ILogger{Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse},System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.String,System.String,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            The <see cref="T:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse"/>
+            </summary>
+            <param name="logger"></param>
+            <param name="httpRequestMessage"></param>
+            <param name="httpResponseMessage"></param>
+            <param name="rawContent"></param>
+            <param name="path"></param>
+            <param name="requestedAt"></param>
+            <param name="jsonSerializerOptions"></param>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.IsOk">
+            <summary>
+            Returns true if the response is 200 Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.Ok">
+            <summary>
+            Deserializes the response if the response is 200 Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.TryOk(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 200 Ok and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.IsBadRequest">
+            <summary>
+            Returns true if the response is 400 BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.BadRequest">
+            <summary>
+            Deserializes the response if the response is 400 BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.TryBadRequest(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 400 BadRequest and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.IsUnauthorized">
+            <summary>
+            Returns true if the response is 401 Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.Unauthorized">
+            <summary>
+            Deserializes the response if the response is 401 Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.TryUnauthorized(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 401 Unauthorized and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.IsTooManyRequests">
+            <summary>
+            Returns true if the response is 429 TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.TooManyRequests">
+            <summary>
+            Deserializes the response if the response is 429 TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.TryTooManyRequests(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 429 TooManyRequests and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.IsInternalServerError">
+            <summary>
+            Returns true if the response is 500 InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.InternalServerError">
+            <summary>
+            Deserializes the response if the response is 500 InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.TrackApiResponse.TryInternalServerError(Com.OursPrivacy.Model.Api200Response@)">
+            <summary>
+            Returns true if the response is 500 InternalServerError and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.EnqueueIdentify(Com.OursPrivacy.Model.IdentifyRequest)">
+            <summary>
+            Enqueue an IdentifyRequest for batching. Will be sent according to batch config.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.EnqueueTrack(Com.OursPrivacy.Model.TrackRequest)">
+            <summary>
+            Enqueue a TrackRequest for batching. Will be sent according to batch config.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.FlushEventQueue">
+            <summary>
+            Manually flush the event queue.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Api.OursPrivacyApi.FlushEventQueueAsync">
+            <summary>
+            Manually flush the event queue.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ApiException">
+            <summary>
+            API Exception
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiException.ReasonPhrase">
+            <summary>
+            The reason the api request failed
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiException.StatusCode">
+            <summary>
+            The HttpStatusCode
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiException.RawContent">
+            <summary>
+            The raw data returned by the api
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ApiException.#ctor(System.String,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Construct the ApiException from parts of the response
+            </summary>
+            <param name="reasonPhrase"></param>
+            <param name="statusCode"></param>
+            <param name="rawContent"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.IApiFactory">
+            <summary>
+            An IApiFactory interface
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IApiFactory.Create``1">
+            <summary>
+            A method to create an IApi of type IResult
+            </summary>
+            <typeparam name="IResult"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ApiFactory">
+            <summary>
+            An ApiFactory
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiFactory.Services">
+            <summary>
+            The service provider
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ApiFactory.#ctor(System.IServiceProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Client.ApiFactory"/> class.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ApiFactory.Create``1">
+            <summary>
+            A method to create an IApi of type IResult
+            </summary>
+            <typeparam name="IResult"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ApiResponseEventArgs">
+            <summary>
+            Useful for tracking server health
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponseEventArgs.ApiResponse">
+            <summary>
+            The ApiResponse
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ApiResponseEventArgs.#ctor(Com.OursPrivacy.Client.ApiResponse)">
+            <summary>
+            The ApiResponseEventArgs
+            </summary>
+            <param name="apiResponse"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.IApiResponse">
+            <summary>
+            Provides a non-generic contract for the ApiResponse wrapper.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.IsSuccessStatusCode">
+            <summary>
+            The IsSuccessStatusCode from the api response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.StatusCode">
+            <summary>
+            Gets the status code (HTTP status code)
+            </summary>
+            <value>The status code.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.RawContent">
+            <summary>
+            The raw content of this response.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.DownloadedAt">
+            <summary>
+            The DateTime when the request was retrieved.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.Headers">
+            <summary>
+            The headers contained in the api response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.Path">
+            <summary>
+            The path used when making the request.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.ReasonPhrase">
+            <summary>
+            The reason phrase contained in the api response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.RequestedAt">
+            <summary>
+            The DateTime when the request was sent.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.IApiResponse.RequestUri">
+            <summary>
+            The Uri used when making the request.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ApiResponse">
+            <summary>
+            API Response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.StatusCode">
+            <summary>
+            Gets the status code (HTTP status code)
+            </summary>
+            <value>The status code.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.RawContent">
+            <summary>
+            The raw data
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.IsSuccessStatusCode">
+            <summary>
+            The IsSuccessStatusCode from the api response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.ReasonPhrase">
+            <summary>
+            The reason phrase contained in the api response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.Headers">
+            <summary>
+            The headers contained in the api response
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.DownloadedAt">
+            <summary>
+            The DateTime when the request was retrieved.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.RequestedAt">
+            <summary>
+            The DateTime when the request was sent.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.Path">
+            <summary>
+            The path used when making the request.
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ApiResponse.RequestUri">
+            <summary>
+            The Uri used when making the request.
+            </summary>
+        </member>
+        <member name="F:Com.OursPrivacy.Client.ApiResponse._jsonSerializerOptions">
+            <summary>
+            The <see cref="T:System.Text.Json.JsonSerializerOptions"/>
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ApiResponse.#ctor(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.String,System.String,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Construct the response using an HttpResponseMessage
+            </summary>
+            <param name="httpRequestMessage"></param>
+            <param name="httpResponseMessage"></param>
+            <param name="rawContent"></param>
+            <param name="path"></param>
+            <param name="requestedAt"></param>
+            <param name="jsonSerializerOptions"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.IBadRequest`1">
+            <summary>
+            An interface for responses of type 
+            </summary>
+            <typeparam name="TType"></typeparam>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IBadRequest`1.BadRequest">
+            <summary>
+            Deserializes the response if the response is BadRequest
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IBadRequest`1.TryBadRequest(`0@)">
+            <summary>
+            Returns true if the response is BadRequest and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ITooManyRequests`1">
+            <summary>
+            An interface for responses of type 
+            </summary>
+            <typeparam name="TType"></typeparam>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ITooManyRequests`1.TooManyRequests">
+            <summary>
+            Deserializes the response if the response is TooManyRequests
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ITooManyRequests`1.TryTooManyRequests(`0@)">
+            <summary>
+            Returns true if the response is TooManyRequests and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.IUnauthorized`1">
+            <summary>
+            An interface for responses of type 
+            </summary>
+            <typeparam name="TType"></typeparam>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IUnauthorized`1.Unauthorized">
+            <summary>
+            Deserializes the response if the response is Unauthorized
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IUnauthorized`1.TryUnauthorized(`0@)">
+            <summary>
+            Returns true if the response is Unauthorized and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.IOk`1">
+            <summary>
+            An interface for responses of type 
+            </summary>
+            <typeparam name="TType"></typeparam>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IOk`1.Ok">
+            <summary>
+            Deserializes the response if the response is Ok
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IOk`1.TryOk(`0@)">
+            <summary>
+            Returns true if the response is Ok and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.IInternalServerError`1">
+            <summary>
+            An interface for responses of type 
+            </summary>
+            <typeparam name="TType"></typeparam>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IInternalServerError`1.InternalServerError">
+            <summary>
+            Deserializes the response if the response is InternalServerError
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.IInternalServerError`1.TryInternalServerError(`0@)">
+            <summary>
+            Returns true if the response is InternalServerError and the deserialized response is not null
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ClientUtils">
+            <summary>
+            Utility functions providing some benefit to API client consumers.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ClientUtils.EventHandler`1">
+            <summary>
+            A delegate for events.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sender"></param>
+            <param name="e"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.TryDeserialize``1(System.String,System.Text.Json.JsonSerializerOptions,``0@)">
+            <summary>
+            Returns true when deserialization succeeds.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="json"></param>
+            <param name="options"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.TryDeserialize``1(System.Text.Json.Utf8JsonReader@,System.Text.Json.JsonSerializerOptions,``0@)">
+            <summary>
+            Returns true when deserialization succeeds.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="reader"></param>
+            <param name="options"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.ParameterToString(System.Object,System.String)">
+            <summary>
+            If parameter is DateTime, output in a formatted string (default ISO 8601), customizable with Configuration.DateTime.
+            If parameter is a list, join the list with ",".
+            Otherwise just return the string.
+            </summary>
+            <param name="obj">The parameter (header, path, query, form).</param>
+            <param name="format">The DateTime serialization format.</param>
+            <returns>Formatted string.</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.UrlEncode(System.String)">
+            <summary>
+            URL encode a string
+            Credit/Ref: https://github.com/restsharp/RestSharp/blob/master/RestSharp/Extensions/StringExtensions.cs#L50
+            </summary>
+            <param name="input">string to be URL encoded</param>
+            <returns>Byte array</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.Base64Encode(System.String)">
+            <summary>
+            Encode string in base64 format.
+            </summary>
+            <param name="text">string to be encoded.</param>
+            <returns>Encoded string.</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.ReadAsBytes(System.IO.Stream)">
+            <summary>
+            Convert stream to byte array
+            </summary>
+            <param name="inputStream">Input stream to be converted</param>
+            <returns>Byte array</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.SelectHeaderContentType(System.String[])">
+            <summary>
+            Select the Content-Type header's value from the given content-type array:
+            if JSON type exists in the given array, use it;
+            otherwise use the first one defined in 'consumes'
+            </summary>
+            <param name="contentTypes">The Content-Type array to select from.</param>
+            <returns>The Content-Type header to use.</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.SelectHeaderAccept(System.String[])">
+            <summary>
+            Select the Accept header's value from the given accepts array:
+            if JSON exists in the given array, use it;
+            otherwise use all of them (joining into a string)
+            </summary>
+            <param name="accepts">The accepts array to select from.</param>
+            <returns>The Accept header to use.</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.JsonRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ 1st capture group.<br/>
+                ○ Match with 2 alternative expressions.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match a character in the set [Aa].<br/>
+                        ○ Match a character in the set [Pp] exactly 2 times.<br/>
+                        ○ Match a character in the set [Ll].<br/>
+                        ○ Match a character in the set [Ii].<br/>
+                        ○ Match a character in the set [Cc].<br/>
+                        ○ Match a character in the set [Aa].<br/>
+                        ○ Match a character in the set [Tt].<br/>
+                        ○ Match a character in the set [Ii].<br/>
+                        ○ Match a character in the set [Oo].<br/>
+                        ○ Match a character in the set [Nn].<br/>
+                        ○ Match '/'.<br/>
+                        ○ Match a character in the set [Jj].<br/>
+                        ○ Match a character in the set [Ss].<br/>
+                        ○ Match a character in the set [Oo].<br/>
+                        ○ Match a character in the set [Nn].<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match a character in the set [^\t /;] atomically at least once.<br/>
+                        ○ Match '/'.<br/>
+                        ○ Match a character in the set [^\t /;] greedily at least once.<br/>
+                        ○ Match '+'.<br/>
+                        ○ Match a character in the set [Jj].<br/>
+                        ○ Match a character in the set [Ss].<br/>
+                        ○ Match a character in the set [Oo].<br/>
+                        ○ Match a character in the set [Nn].<br/>
+            ○ Match a character in the set [\t ] greedily any number of times.<br/>
+            ○ Optional (greedy).<br/>
+                ○ 2nd capture group.<br/>
+                    ○ Match ';'.<br/>
+                    ○ Match a character other than '\n' greedily any number of times.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.IsJsonMime(System.String)">
+            <summary>
+            Check if the given MIME is a JSON MIME.
+            JSON MIME examples:
+               application/json
+               application/json; charset=UTF8
+               APPLICATION/JSON
+               application/vnd.company+json
+            </summary>
+            <param name="mime">MIME</param>
+            <returns>Returns True if MIME type is json.</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ClientUtils.GetDiscriminator(System.Text.Json.Utf8JsonReader,System.String)">
+            <summary>
+            Get the discriminator
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="discriminator"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="F:Com.OursPrivacy.Client.ClientUtils.BASE_ADDRESS">
+            <summary>
+            The base path of the API
+            </summary>
+        </member>
+        <member name="F:Com.OursPrivacy.Client.ClientUtils.SCHEME">
+            <summary>
+            The scheme of the API
+            </summary>
+        </member>
+        <member name="F:Com.OursPrivacy.Client.ClientUtils.CONTEXT_PATH">
+            <summary>
+            The context path of the API
+            </summary>
+        </member>
+        <member name="F:Com.OursPrivacy.Client.ClientUtils.HOST">
+            <summary>
+            The host of the API
+            </summary>
+        </member>
+        <member name="F:Com.OursPrivacy.Client.ClientUtils.ISO8601_DATETIME_FORMAT">
+            <summary>
+            The format to use for DateTime serialization
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.CookieContainer">
+            <summary>
+            A class containing a CookieContainer
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.CookieContainer.Value">
+            <summary>
+            The collection of tokens
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.DateOnlyJsonConverter">
+            <summary>
+            Formatter for 'date' openapi formats ss defined by full-date - RFC3339
+            see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.DateOnlyJsonConverter.Formats">
+            <summary>
+            The formats used to deserialize the date
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateOnlyJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Returns a DateOnly from the Json object
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateOnlyJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateOnly,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Writes the DateOnly to the json writer
+            </summary>
+            <param name="writer"></param>
+            <param name="dateOnlyValue"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.DateOnlyNullableJsonConverter">
+            <summary>
+            Formatter for 'date' openapi formats ss defined by full-date - RFC3339
+            see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.DateOnlyNullableJsonConverter.Formats">
+            <summary>
+            The formats used to deserialize the date
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateOnlyNullableJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Returns a DateOnly from the Json object
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateOnlyNullableJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateOnly},System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Writes the DateOnly to the json writer
+            </summary>
+            <param name="writer"></param>
+            <param name="dateOnlyValue"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.DateTimeJsonConverter">
+            <summary>
+            Formatter for 'date-time' openapi formats ss defined by full-date - RFC3339
+            see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.DateTimeJsonConverter.Formats">
+            <summary>
+            The formats used to deserialize the date
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateTimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Returns a DateTime from the Json object
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateTimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Writes the DateTime to the json writer
+            </summary>
+            <param name="writer"></param>
+            <param name="dateTimeValue"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.DateTimeNullableJsonConverter">
+            <summary>
+            Formatter for 'date-time' openapi formats ss defined by full-date - RFC3339
+            see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.DateTimeNullableJsonConverter.Formats">
+            <summary>
+            The formats used to deserialize the date
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateTimeNullableJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Returns a DateTime from the Json object
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.DateTimeNullableJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTime},System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Writes the DateTime to the json writer
+            </summary>
+            <param name="writer"></param>
+            <param name="dateTimeValue"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.EventBatch">
+            <summary>
+            A class that batches events for processing.
+            It uses a queue to store events and processes them in batches.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.EventBatch.#ctor(System.IServiceProvider,System.Int32,System.TimeSpan)">
+            <summary>
+            Initializes a new instance of the EventBatch class.
+            </summary>
+            <param name="serviceProvider"></param>
+            <param name="batchSize"></param>
+            <param name="maxWaitTime"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.EventBatch.ProcessEventAsync(Com.OursPrivacy.Api.IOursPrivacyApi,System.Object)">
+            <summary>
+            Processes an event asynchronously.
+            </summary>
+            <param name="api">The OursPrivacyApi instance</param>
+            <param name="evt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.EventBatch.EnqueueEvent(System.Object)">
+            <summary>
+            Enqueue an event for batching. Triggers send if batch size is reached.
+            </summary>
+            <param name="evt">The event to enqueue</param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.EventBatch.FlushAsync">
+            <summary>
+            Flushes the event queue, sending all events one at a time.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.EventBatch.Flush">
+            <summary>
+            Flushes the event queue, sending all events one at a time.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.EventBatch.ProcessQueueAsync">
+            <summary>
+            Processes the event queue, sending events one at a time.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.ExceptionEventArgs">
+            <summary>
+            Useful for tracking server health
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.ExceptionEventArgs.Exception">
+            <summary>
+            The ApiResponse
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.ExceptionEventArgs.#ctor(System.Exception)">
+            <summary>
+            The ExceptionEventArgs
+            </summary>
+            <param name="exception"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.HostConfiguration">
+            <summary>
+            Provides hosting configuration for Com.OursPrivacy
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Instantiates the class 
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.AddApiHttpClients(System.Action{System.Net.Http.HttpClient},System.Action{Microsoft.Extensions.DependencyInjection.IHttpClientBuilder})">
+            <summary>
+            Configures the HttpClients.
+            </summary>
+            <param name="client"></param>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.ConfigureJsonOptions(System.Action{System.Text.Json.JsonSerializerOptions})">
+            <summary>
+            Configures the JsonSerializerSettings
+            </summary>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.AddTokens``1(``0)">
+            <summary>
+            Adds tokens to your IServiceCollection
+            </summary>
+            <typeparam name="TTokenBase"></typeparam>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.AddTokens``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds tokens to your IServiceCollection
+            </summary>
+            <typeparam name="TTokenBase"></typeparam>
+            <param name="tokens"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.UseProvider``2">
+            <summary>
+            Adds a token provider to your IServiceCollection
+            </summary>
+            <typeparam name="TTokenProvider"></typeparam>
+            <typeparam name="TTokenBase"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.HostConfiguration.ApiKey">
+            <summary>
+            The token for your Ours Privacy Source. You can find this in the Ours dashboard.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.ConfigureApiKey(System.String)">
+            <summary>
+            Add the token for your Ours Privacy Source. You can find this in the Ours dashboard.
+            </summary>
+            <param name="apiKey"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.HostConfiguration.AddEventBatch(System.Int32,System.TimeSpan)">
+            <summary>
+            Configure batching options for all event types.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.JsonSerializerOptionsProvider">
+            <summary>
+            Provides the JsonSerializerOptions
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.JsonSerializerOptionsProvider.Options">
+            <summary>
+            the JsonSerializerOptions
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.JsonSerializerOptionsProvider.#ctor(System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Instantiates a JsonSerializerOptionsProvider
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.Option`1">
+            <summary>
+            A wrapper for operation parameters which are not required
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.Option`1.Value">
+            <summary>
+            The value to send to the server
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.Option`1.IsSet">
+            <summary>
+            When true the value will be sent to the server
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.Option`1.#ctor(`0)">
+            <summary>
+            A wrapper for operation parameters which are not required
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.Option`1.op_Implicit(Com.OursPrivacy.Client.Option{`0})~`0">
+            <summary>
+            Implicitly converts this option to the contained type
+            </summary>
+            <param name="option"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.Option`1.op_Implicit(`0)~Com.OursPrivacy.Client.Option{`0}">
+            <summary>
+            Implicitly converts the provided value to an Option
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.RateLimitProvider`1">
+            <summary>
+            Provides a token to the api clients. Tokens will be rate limited based on the provided TimeSpan.
+            </summary>
+            <typeparam name="TTokenBase"></typeparam>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.RateLimitProvider`1.#ctor(Com.OursPrivacy.Client.TokenContainer{`0})">
+            <summary>
+            Instantiates a ThrottledTokenProvider. Your tokens will be rate limited based on the token's timeout.
+            </summary>
+            <param name="container"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.TokenBase">
+            <summary>
+            The base for all tokens.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.TokenBase.#ctor(System.Nullable{System.TimeSpan})">
+            <summary>
+            Initialize a TokenBase object.
+            </summary>
+            <param name="timeout"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.TokenBase.StartTimer(System.TimeSpan)">
+            <summary>
+            Starts the token's timer
+            </summary>
+            <param name="timeout"></param>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.TokenBase.IsRateLimited">
+            <summary>
+            Returns true while the token is rate limited.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.TokenBase.BeginRateLimit">
+            <summary>
+            Triggered when the server returns status code TooManyRequests
+            Once triggered the local timeout will be extended an arbitrary length of time.
+            </summary>
+        </member>
+        <member name="T:Com.OursPrivacy.Client.TokenContainer`1">
+            <summary>
+            A container for a collection of tokens.
+            </summary>
+            <typeparam name="TTokenBase"></typeparam>
+        </member>
+        <member name="P:Com.OursPrivacy.Client.TokenContainer`1.Tokens">
+            <summary>
+            The collection of tokens
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.TokenContainer`1.#ctor">
+            <summary>
+            Instantiates a TokenContainer
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Client.TokenContainer`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Instantiates a TokenContainer
+            </summary>
+            <param name="tokens"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.TokenProvider`1">
+            <summary>
+            A class which will provide tokens.
+            </summary>
+        </member>
+        <member name="F:Com.OursPrivacy.TokenProvider`1._tokens">
+            <summary>
+            The array of tokens.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.TokenProvider`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Instantiates a TokenProvider.
+            </summary>
+            <param name="tokens"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Extensions.IHostBuilderExtensions">
+            <summary>
+            Extension methods for IHostBuilder
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IHostBuilderExtensions.ConfigureOursPrivacy(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            Add the api to your host builder.
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IHostBuilderExtensions.ConfigureOursPrivacy(Microsoft.Extensions.Hosting.IHostBuilder,System.Action{Microsoft.Extensions.Hosting.HostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection,Com.OursPrivacy.Client.HostConfiguration})">
+            <summary>
+            Add the api to your host builder.
+            </summary>
+            <param name="builder"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Extensions.IHttpClientBuilderExtensions">
+            <summary>
+            Extension methods for IHttpClientBuilder
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IHttpClientBuilderExtensions.AddRetryPolicy(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.Int32)">
+            <summary>
+            Adds a Polly retry policy to your clients.
+            </summary>
+            <param name="client"></param>
+            <param name="retries"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IHttpClientBuilderExtensions.AddTimeoutPolicy(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.TimeSpan)">
+            <summary>
+            Adds a Polly timeout policy to your clients.
+            </summary>
+            <param name="client"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IHttpClientBuilderExtensions.AddCircuitBreakerPolicy(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.Int32,System.TimeSpan)">
+            <summary>
+            Adds a Polly circuit breaker to your clients.
+            </summary>
+            <param name="client"></param>
+            <param name="handledEventsAllowedBeforeBreaking"></param>
+            <param name="durationOfBreak"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Extensions.IServiceCollectionExtensions">
+            <summary>
+            Extension methods for IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IServiceCollectionExtensions.AddOursPrivacyApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add the api to your host builder.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Com.OursPrivacy.Extensions.IServiceCollectionExtensions.AddOursPrivacyApi(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Com.OursPrivacy.Client.HostConfiguration})">
+            <summary>
+            Add the api to your host builder.
+            </summary>
+            <param name="services"></param>
+            <param name="options"></param>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.Api200Response">
+            <summary>
+            Track200Response
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.Api200Response.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Model.Api200Response" /> class.
+            </summary>
+            <param name="success">success</param>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.Api200Response.Success">
+            <summary>
+            Gets or Sets Success
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.Api200Response.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.Api200Response.System#ComponentModel#DataAnnotations#IValidatableObject#Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            To validate all properties of the instance
+            </summary>
+            <param name="validationContext">Validation context</param>
+            <returns>Validation Result</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.Track200ResponseJsonConverter">
+            <summary>
+            A Json converter for type <see cref="T:Com.OursPrivacy.Model.Api200Response" />
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.Track200ResponseJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Deserializes json to <see cref="T:Com.OursPrivacy.Model.Api200Response" />
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="typeToConvert"></param>
+            <param name="jsonSerializerOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.Track200ResponseJsonConverter.Write(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.Api200Response,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes a <see cref="T:Com.OursPrivacy.Model.Api200Response" />
+            </summary>
+            <param name="writer"></param>
+            <param name="track200Response"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.Track200ResponseJsonConverter.WriteProperties(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.Api200Response,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes the properties of <see cref="T:Com.OursPrivacy.Model.Api200Response" />
+            </summary>
+            <param name="writer"></param>
+            <param name="track200Response"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.IdentifyRequest">
+            <summary>
+            IdentifyRequest
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequest.#ctor(System.String,Com.OursPrivacy.Model.IdentifyRequestUserProperties,Com.OursPrivacy.Client.Option{Com.OursPrivacy.Model.TrackRequestDefaultProperties})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Model.IdentifyRequest" /> class.
+            </summary>
+            <param name="userId">The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.</param>
+            <param name="userProperties">userProperties</param>
+            <param name="defaultProperties">defaultProperties</param>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequest.Token">
+            <summary>
+            The token for your Ours Privacy Source. You can find this in the Ours dashboard.
+            </summary>
+            <value>The token for your Ours Privacy Source. You can find this in the Ours dashboard.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequest.UserId">
+            <summary>
+            The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.
+            </summary>
+            <value>The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequest.UserProperties">
+            <summary>
+            Gets or Sets UserProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequest.DefaultPropertiesOption">
+            <summary>
+            Used to track the state of DefaultProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequest.DefaultProperties">
+            <summary>
+            Gets or Sets DefaultProperties
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequest.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequest.System#ComponentModel#DataAnnotations#IValidatableObject#Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            To validate all properties of the instance
+            </summary>
+            <param name="validationContext">Validation context</param>
+            <returns>Validation Result</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.IdentifyRequestJsonConverter">
+            <summary>
+            A Json converter for type <see cref="T:Com.OursPrivacy.Model.IdentifyRequest" />
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Deserializes json to <see cref="T:Com.OursPrivacy.Model.IdentifyRequest" />
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="typeToConvert"></param>
+            <param name="jsonSerializerOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestJsonConverter.Write(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.IdentifyRequest,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes a <see cref="T:Com.OursPrivacy.Model.IdentifyRequest" />
+            </summary>
+            <param name="writer"></param>
+            <param name="identifyRequest"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestJsonConverter.WriteProperties(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.IdentifyRequest,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes the properties of <see cref="T:Com.OursPrivacy.Model.IdentifyRequest" />
+            </summary>
+            <param name="writer"></param>
+            <param name="identifyRequest"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.IdentifyRequestUserProperties">
+            <summary>
+            User properties to associate with this user. The existing user properties will be updated. And all future events will have these properties associated with them.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestUserProperties.#ctor(Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Object},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Object},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Model.IdentifyRequestUserProperties" /> class.
+            </summary>
+            <param name="email">email</param>
+            <param name="firstName">firstName</param>
+            <param name="lastName">lastName</param>
+            <param name="gender">gender</param>
+            <param name="dateOfBirth">dateOfBirth</param>
+            <param name="phoneNumber">phoneNumber</param>
+            <param name="city">city</param>
+            <param name="state">state</param>
+            <param name="zip">zip</param>
+            <param name="country">country</param>
+            <param name="externalId">externalId</param>
+            <param name="companyName">companyName</param>
+            <param name="jobTitle">jobTitle</param>
+            <param name="ip">The IP address of the user</param>
+            <param name="customProperties">customProperties</param>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.EmailOption">
+            <summary>
+            Used to track the state of Email
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.Email">
+            <summary>
+            Gets or Sets Email
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.FirstNameOption">
+            <summary>
+            Used to track the state of FirstName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.FirstName">
+            <summary>
+            Gets or Sets FirstName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.LastNameOption">
+            <summary>
+            Used to track the state of LastName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.LastName">
+            <summary>
+            Gets or Sets LastName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.GenderOption">
+            <summary>
+            Used to track the state of Gender
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.Gender">
+            <summary>
+            Gets or Sets Gender
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.DateOfBirthOption">
+            <summary>
+            Used to track the state of DateOfBirth
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.DateOfBirth">
+            <summary>
+            Gets or Sets DateOfBirth
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.PhoneNumberOption">
+            <summary>
+            Used to track the state of PhoneNumber
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.PhoneNumber">
+            <summary>
+            Gets or Sets PhoneNumber
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.CityOption">
+            <summary>
+            Used to track the state of City
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.City">
+            <summary>
+            Gets or Sets City
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.StateOption">
+            <summary>
+            Used to track the state of State
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.State">
+            <summary>
+            Gets or Sets State
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.ZipOption">
+            <summary>
+            Used to track the state of Zip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.Zip">
+            <summary>
+            Gets or Sets Zip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.CountryOption">
+            <summary>
+            Used to track the state of Country
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.Country">
+            <summary>
+            Gets or Sets Country
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.ExternalIdOption">
+            <summary>
+            Used to track the state of ExternalId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.ExternalId">
+            <summary>
+            Gets or Sets ExternalId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.CompanyNameOption">
+            <summary>
+            Used to track the state of CompanyName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.CompanyName">
+            <summary>
+            Gets or Sets CompanyName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.JobTitleOption">
+            <summary>
+            Used to track the state of JobTitle
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.JobTitle">
+            <summary>
+            Gets or Sets JobTitle
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.IpOption">
+            <summary>
+            Used to track the state of Ip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.Ip">
+            <summary>
+            The IP address of the user
+            </summary>
+            <value>The IP address of the user</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.CustomPropertiesOption">
+            <summary>
+            Used to track the state of CustomProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.IdentifyRequestUserProperties.CustomProperties">
+            <summary>
+            Gets or Sets CustomProperties
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestUserProperties.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestUserProperties.System#ComponentModel#DataAnnotations#IValidatableObject#Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            To validate all properties of the instance
+            </summary>
+            <param name="validationContext">Validation context</param>
+            <returns>Validation Result</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.IdentifyRequestUserPropertiesJsonConverter">
+            <summary>
+            A Json converter for type <see cref="T:Com.OursPrivacy.Model.IdentifyRequestUserProperties" />
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestUserPropertiesJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Deserializes json to <see cref="T:Com.OursPrivacy.Model.IdentifyRequestUserProperties" />
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="typeToConvert"></param>
+            <param name="jsonSerializerOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestUserPropertiesJsonConverter.Write(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.IdentifyRequestUserProperties,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes a <see cref="T:Com.OursPrivacy.Model.IdentifyRequestUserProperties" />
+            </summary>
+            <param name="writer"></param>
+            <param name="identifyRequestUserProperties"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.IdentifyRequestUserPropertiesJsonConverter.WriteProperties(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.IdentifyRequestUserProperties,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes the properties of <see cref="T:Com.OursPrivacy.Model.IdentifyRequestUserProperties" />
+            </summary>
+            <param name="writer"></param>
+            <param name="identifyRequestUserProperties"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.TrackRequest">
+            <summary>
+            TrackRequest
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequest.#ctor(System.String,Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Collections.Generic.Dictionary{System.String,System.Object}},Com.OursPrivacy.Client.Option{Com.OursPrivacy.Model.TrackRequestUserProperties},Com.OursPrivacy.Client.Option{Com.OursPrivacy.Model.TrackRequestDefaultProperties},Com.OursPrivacy.Client.Option{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Model.TrackRequest" /> class.
+            </summary>
+            <param name="event">The name of the event you&#39;re tracking. This must be whitelisted in the Ours dashboard.</param>
+            <param name="time">The time at which the event occurred, in seconds or milliseconds since UTC epoch. The time must be in the past and within the last 7 days.</param>
+            <param name="userId">The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.</param>
+            <param name="externalId">The externalId (the ID in your system) of a user. We will associate this event with the user or create a user. If included in the request, email lookup is ignored.</param>
+            <param name="email">The email address of a user. We will associate this event with the user or create a user. Used for lookup if externalId and userId are not included in the request.</param>
+            <param name="eventProperties">Any additional event properties you want to pass along.</param>
+            <param name="userProperties">userProperties</param>
+            <param name="defaultProperties">defaultProperties</param>
+            <param name="distinctId">A unique identifier for the event. This helps prevent duplicate events.</param>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.Event">
+            <summary>
+            The name of the event you&#39;re tracking. This must be whitelisted in the Ours dashboard.
+            </summary>
+            <value>The name of the event you&#39;re tracking. This must be whitelisted in the Ours dashboard.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.Token">
+            <summary>
+            The token for your Ours Privacy Source. You can find this in the Ours dashboard.
+            </summary>
+            <value>The token for your Ours Privacy Source. You can find this in the Ours dashboard.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.TimeOption">
+            <summary>
+            Used to track the state of Time
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.Time">
+            <summary>
+            The time at which the event occurred, in seconds or milliseconds since UTC epoch. The time must be in the past and within the last 7 days.
+            </summary>
+            <value>The time at which the event occurred, in seconds or milliseconds since UTC epoch. The time must be in the past and within the last 7 days.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.UserIdOption">
+            <summary>
+            Used to track the state of UserId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.UserId">
+            <summary>
+            The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.
+            </summary>
+            <value>The Ours user id stored in local storage and cookies on your web properties. If userId is included in the request, we do not lookup the user by email or externalId.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.ExternalIdOption">
+            <summary>
+            Used to track the state of ExternalId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.ExternalId">
+            <summary>
+            The externalId (the ID in your system) of a user. We will associate this event with the user or create a user. If included in the request, email lookup is ignored.
+            </summary>
+            <value>The externalId (the ID in your system) of a user. We will associate this event with the user or create a user. If included in the request, email lookup is ignored.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.EmailOption">
+            <summary>
+            Used to track the state of Email
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.Email">
+            <summary>
+            The email address of a user. We will associate this event with the user or create a user. Used for lookup if externalId and userId are not included in the request.
+            </summary>
+            <value>The email address of a user. We will associate this event with the user or create a user. Used for lookup if externalId and userId are not included in the request.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.EventPropertiesOption">
+            <summary>
+            Used to track the state of EventProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.EventProperties">
+            <summary>
+            Any additional event properties you want to pass along.
+            </summary>
+            <value>Any additional event properties you want to pass along.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.UserPropertiesOption">
+            <summary>
+            Used to track the state of UserProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.UserProperties">
+            <summary>
+            Gets or Sets UserProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.DefaultPropertiesOption">
+            <summary>
+            Used to track the state of DefaultProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.DefaultProperties">
+            <summary>
+            Gets or Sets DefaultProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.DistinctIdOption">
+            <summary>
+            Used to track the state of DistinctId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequest.DistinctId">
+            <summary>
+            A unique identifier for the event. This helps prevent duplicate events.
+            </summary>
+            <value>A unique identifier for the event. This helps prevent duplicate events.</value>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequest.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequest.System#ComponentModel#DataAnnotations#IValidatableObject#Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            To validate all properties of the instance
+            </summary>
+            <param name="validationContext">Validation context</param>
+            <returns>Validation Result</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.TrackRequestJsonConverter">
+            <summary>
+            A Json converter for type <see cref="T:Com.OursPrivacy.Model.TrackRequest" />
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Deserializes json to <see cref="T:Com.OursPrivacy.Model.TrackRequest" />
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="typeToConvert"></param>
+            <param name="jsonSerializerOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestJsonConverter.Write(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.TrackRequest,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes a <see cref="T:Com.OursPrivacy.Model.TrackRequest" />
+            </summary>
+            <param name="writer"></param>
+            <param name="trackRequest"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestJsonConverter.WriteProperties(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.TrackRequest,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes the properties of <see cref="T:Com.OursPrivacy.Model.TrackRequest" />
+            </summary>
+            <param name="writer"></param>
+            <param name="trackRequest"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.TrackRequestDefaultProperties">
+            <summary>
+            These properties are used throughout the Ours app to pass known values onto destinations
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestDefaultProperties.#ctor(Com.OursPrivacy.Client.Option{System.Nullable{System.Boolean}},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Nullable{System.Boolean}},Com.OursPrivacy.Client.Option{System.Nullable{System.Boolean}},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Nullable{System.Decimal}},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Nullable{System.Boolean}},Com.OursPrivacy.Client.Option{System.Nullable{System.Boolean}},Com.OursPrivacy.Client.Option{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Model.TrackRequestDefaultProperties" /> class.
+            </summary>
+            <param name="isBot">Whether we have detected that the user is a bot. This is set automatically by the Ours server primarily for events tracked through the web SDK.</param>
+            <param name="adId">The ad id for detected in the session. This is set by the web sdk automatically.</param>
+            <param name="adsetId">The adset id for detected in the session. This is set by the web sdk automatically.</param>
+            <param name="campaignId">The campaign id for detected in the session. This is set by the web sdk automatically.</param>
+            <param name="encoding">The browsers encoding. Ex: UTF-8</param>
+            <param name="browserName">The name of the browser. Ex: Chrome</param>
+            <param name="browserVersion">The version of the browser. Ex: 114.0</param>
+            <param name="cpuArchitecture">The architecture of the CPU. Ex: x64</param>
+            <param name="deviceType">The type of device the user is using. Ex: mobile</param>
+            <param name="deviceModel">The model of the device. Ex: iPhone 13</param>
+            <param name="deviceVendor">The vendor of the device. Ex: Apple</param>
+            <param name="engineName">The name of the browser engine. Ex: Blink</param>
+            <param name="engineVersion">The version of the browser engine. Ex: 114.0</param>
+            <param name="osName">The name of the operating system. Ex: Windows</param>
+            <param name="osVersion">The version of the operating system. Ex: 10.0</param>
+            <param name="browserLanguage">The language of the browser. Ex: en-US</param>
+            <param name="currentUrl">The full url (including query params) of the current page</param>
+            <param name="webview">Whether the user is in a webview. Ex: true</param>
+            <param name="iframe">Whether the user is in an iframe. Ex: true</param>
+            <param name="sessionCount">The number of sessions the user has had. Ex: 3</param>
+            <param name="activeDuration">The active time in milliseconds that the user had this tab active</param>
+            <param name="duration">The time in milliseconds since the page was loaded // script was loaded</param>
+            <param name="epik">The Pinterest Click ID. Ex: epik456</param>
+            <param name="sacid">The StackAdapt Tracking ID. Ex: sacid123</param>
+            <param name="fbc">Facebook Click ID with prefix format for Conversions API tracking. Ex: fb.1.1554763741205.AbCdEfGhIjKlMnOpQrStUvWxYz1234567890</param>
+            <param name="fbclid">Raw Facebook Click ID query parameter without prefix from ad clicks. Ex: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890</param>
+            <param name="fbclidCreationTime">fbclidCreationTime</param>
+            <param name="fbp">Facebook Browser ID parameter for identifying browsers and attributing events. Ex: fb.1.1554763741205.1098115397</param>
+            <param name="gadSource">The Google Ad Source. Ex: google</param>
+            <param name="gbraid">The Google Braid ID. Ex: gbraid123</param>
+            <param name="gclid">The Google Click ID. Ex: gclid123</param>
+            <param name="ndclid">The NextDoor Click ID. Ex: ndclid123</param>
+            <param name="dclid">The DoubleClick Click ID. Ex: dclid123</param>
+            <param name="qclid">The Quora Click ID. Ex: qclid123</param>
+            <param name="rdtCid">The Reddit Click ID. Ex: rdt_cid123</param>
+            <param name="host">The host of the current page. Ex: example.com</param>
+            <param name="ip">The IP address of the user. Ex: 127.0.0.1</param>
+            <param name="msclkid">The Microsoft Click ID. Ex: msclkid123</param>
+            <param name="liFatId">The LinkedIn Click ID. Ex: li_fat_id123</param>
+            <param name="pathname">The pathname of the current page. Ex: /home</param>
+            <param name="referrer">The referrer URL of the current page</param>
+            <param name="screenHeight">The height of the screen. Ex: 1080</param>
+            <param name="screenWidth">The width of the screen. Ex: 1920</param>
+            <param name="title">The title of the current page</param>
+            <param name="userAgent">The user agent of the browser</param>
+            <param name="utmCampaign">The UTM Campaign. The web SDK automatically captures this from the query params.</param>
+            <param name="utmContent">The UTM Content. The web SDK automatically captures this from the query params.</param>
+            <param name="utmMedium">The UTM Medium. The web SDK automatically captures this from the query params.</param>
+            <param name="utmName">The UTM Name. The web SDK automatically captures this from the query params.</param>
+            <param name="ttclid">The TikTok Click ID. Ex: ttclid123</param>
+            <param name="twclid">The Twitter Click ID. Ex: twclid123</param>
+            <param name="clickid">The Click ID. Ex: clickid123</param>
+            <param name="clid">The Generic Click ID. Ex: clid123</param>
+            <param name="sccid">The SnapChat Click ID. Ex: sccid123</param>
+            <param name="utmSource">The UTM Source. The web SDK automatically captures this from the query params.</param>
+            <param name="utmTerm">The UTM Term. The web SDK automatically captures this from the query params.</param>
+            <param name="varVersion">The version of the web SDK</param>
+            <param name="wbraid">The WBRAID Identifier. The web SDK automatically captures this from the query params.</param>
+            <param name="uafvl">User agent as a full list of strings.</param>
+            <param name="pageHash">A random set of numbers for the page load</param>
+            <param name="sid">The session ID as assigned automatically by the web SDK.</param>
+            <param name="newS">Deprecated</param>
+            <param name="fv">Deprecated</param>
+            <param name="sr">sr</param>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.IsBotOption">
+            <summary>
+            Used to track the state of IsBot
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.IsBot">
+            <summary>
+            Whether we have detected that the user is a bot. This is set automatically by the Ours server primarily for events tracked through the web SDK.
+            </summary>
+            <value>Whether we have detected that the user is a bot. This is set automatically by the Ours server primarily for events tracked through the web SDK.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.AdIdOption">
+            <summary>
+            Used to track the state of AdId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.AdId">
+            <summary>
+            The ad id for detected in the session. This is set by the web sdk automatically.
+            </summary>
+            <value>The ad id for detected in the session. This is set by the web sdk automatically.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.AdsetIdOption">
+            <summary>
+            Used to track the state of AdsetId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.AdsetId">
+            <summary>
+            The adset id for detected in the session. This is set by the web sdk automatically.
+            </summary>
+            <value>The adset id for detected in the session. This is set by the web sdk automatically.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.CampaignIdOption">
+            <summary>
+            Used to track the state of CampaignId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.CampaignId">
+            <summary>
+            The campaign id for detected in the session. This is set by the web sdk automatically.
+            </summary>
+            <value>The campaign id for detected in the session. This is set by the web sdk automatically.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.EncodingOption">
+            <summary>
+            Used to track the state of Encoding
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Encoding">
+            <summary>
+            The browsers encoding. Ex: UTF-8
+            </summary>
+            <value>The browsers encoding. Ex: UTF-8</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.BrowserNameOption">
+            <summary>
+            Used to track the state of BrowserName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.BrowserName">
+            <summary>
+            The name of the browser. Ex: Chrome
+            </summary>
+            <value>The name of the browser. Ex: Chrome</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.BrowserVersionOption">
+            <summary>
+            Used to track the state of BrowserVersion
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.BrowserVersion">
+            <summary>
+            The version of the browser. Ex: 114.0
+            </summary>
+            <value>The version of the browser. Ex: 114.0</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.CpuArchitectureOption">
+            <summary>
+            Used to track the state of CpuArchitecture
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.CpuArchitecture">
+            <summary>
+            The architecture of the CPU. Ex: x64
+            </summary>
+            <value>The architecture of the CPU. Ex: x64</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DeviceTypeOption">
+            <summary>
+            Used to track the state of DeviceType
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DeviceType">
+            <summary>
+            The type of device the user is using. Ex: mobile
+            </summary>
+            <value>The type of device the user is using. Ex: mobile</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DeviceModelOption">
+            <summary>
+            Used to track the state of DeviceModel
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DeviceModel">
+            <summary>
+            The model of the device. Ex: iPhone 13
+            </summary>
+            <value>The model of the device. Ex: iPhone 13</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DeviceVendorOption">
+            <summary>
+            Used to track the state of DeviceVendor
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DeviceVendor">
+            <summary>
+            The vendor of the device. Ex: Apple
+            </summary>
+            <value>The vendor of the device. Ex: Apple</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.EngineNameOption">
+            <summary>
+            Used to track the state of EngineName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.EngineName">
+            <summary>
+            The name of the browser engine. Ex: Blink
+            </summary>
+            <value>The name of the browser engine. Ex: Blink</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.EngineVersionOption">
+            <summary>
+            Used to track the state of EngineVersion
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.EngineVersion">
+            <summary>
+            The version of the browser engine. Ex: 114.0
+            </summary>
+            <value>The version of the browser engine. Ex: 114.0</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.OsNameOption">
+            <summary>
+            Used to track the state of OsName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.OsName">
+            <summary>
+            The name of the operating system. Ex: Windows
+            </summary>
+            <value>The name of the operating system. Ex: Windows</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.OsVersionOption">
+            <summary>
+            Used to track the state of OsVersion
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.OsVersion">
+            <summary>
+            The version of the operating system. Ex: 10.0
+            </summary>
+            <value>The version of the operating system. Ex: 10.0</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.BrowserLanguageOption">
+            <summary>
+            Used to track the state of BrowserLanguage
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.BrowserLanguage">
+            <summary>
+            The language of the browser. Ex: en-US
+            </summary>
+            <value>The language of the browser. Ex: en-US</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.CurrentUrlOption">
+            <summary>
+            Used to track the state of CurrentUrl
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.CurrentUrl">
+            <summary>
+            The full url (including query params) of the current page
+            </summary>
+            <value>The full url (including query params) of the current page</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.WebviewOption">
+            <summary>
+            Used to track the state of Webview
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Webview">
+            <summary>
+            Whether the user is in a webview. Ex: true
+            </summary>
+            <value>Whether the user is in a webview. Ex: true</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.IframeOption">
+            <summary>
+            Used to track the state of Iframe
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Iframe">
+            <summary>
+            Whether the user is in an iframe. Ex: true
+            </summary>
+            <value>Whether the user is in an iframe. Ex: true</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.SessionCountOption">
+            <summary>
+            Used to track the state of SessionCount
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.SessionCount">
+            <summary>
+            The number of sessions the user has had. Ex: 3
+            </summary>
+            <value>The number of sessions the user has had. Ex: 3</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ActiveDurationOption">
+            <summary>
+            Used to track the state of ActiveDuration
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ActiveDuration">
+            <summary>
+            The active time in milliseconds that the user had this tab active
+            </summary>
+            <value>The active time in milliseconds that the user had this tab active</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DurationOption">
+            <summary>
+            Used to track the state of Duration
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Duration">
+            <summary>
+            The time in milliseconds since the page was loaded // script was loaded
+            </summary>
+            <value>The time in milliseconds since the page was loaded // script was loaded</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.EpikOption">
+            <summary>
+            Used to track the state of Epik
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Epik">
+            <summary>
+            The Pinterest Click ID. Ex: epik456
+            </summary>
+            <value>The Pinterest Click ID. Ex: epik456</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.SacidOption">
+            <summary>
+            Used to track the state of Sacid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Sacid">
+            <summary>
+            The StackAdapt Tracking ID. Ex: sacid123
+            </summary>
+            <value>The StackAdapt Tracking ID. Ex: sacid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.FbcOption">
+            <summary>
+            Used to track the state of Fbc
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Fbc">
+            <summary>
+            Facebook Click ID with prefix format for Conversions API tracking. Ex: fb.1.1554763741205.AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+            </summary>
+            <value>Facebook Click ID with prefix format for Conversions API tracking. Ex: fb.1.1554763741205.AbCdEfGhIjKlMnOpQrStUvWxYz1234567890</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.FbclidOption">
+            <summary>
+            Used to track the state of Fbclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Fbclid">
+            <summary>
+            Raw Facebook Click ID query parameter without prefix from ad clicks. Ex: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+            </summary>
+            <value>Raw Facebook Click ID query parameter without prefix from ad clicks. Ex: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.FbclidCreationTimeOption">
+            <summary>
+            Used to track the state of FbclidCreationTime
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.FbclidCreationTime">
+            <summary>
+            Gets or Sets FbclidCreationTime
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.FbpOption">
+            <summary>
+            Used to track the state of Fbp
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Fbp">
+            <summary>
+            Facebook Browser ID parameter for identifying browsers and attributing events. Ex: fb.1.1554763741205.1098115397
+            </summary>
+            <value>Facebook Browser ID parameter for identifying browsers and attributing events. Ex: fb.1.1554763741205.1098115397</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.GadSourceOption">
+            <summary>
+            Used to track the state of GadSource
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.GadSource">
+            <summary>
+            The Google Ad Source. Ex: google
+            </summary>
+            <value>The Google Ad Source. Ex: google</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.GbraidOption">
+            <summary>
+            Used to track the state of Gbraid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Gbraid">
+            <summary>
+            The Google Braid ID. Ex: gbraid123
+            </summary>
+            <value>The Google Braid ID. Ex: gbraid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.GclidOption">
+            <summary>
+            Used to track the state of Gclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Gclid">
+            <summary>
+            The Google Click ID. Ex: gclid123
+            </summary>
+            <value>The Google Click ID. Ex: gclid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.NdclidOption">
+            <summary>
+            Used to track the state of Ndclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Ndclid">
+            <summary>
+            The NextDoor Click ID. Ex: ndclid123
+            </summary>
+            <value>The NextDoor Click ID. Ex: ndclid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.DclidOption">
+            <summary>
+            Used to track the state of Dclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Dclid">
+            <summary>
+            The DoubleClick Click ID. Ex: dclid123
+            </summary>
+            <value>The DoubleClick Click ID. Ex: dclid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.QclidOption">
+            <summary>
+            Used to track the state of Qclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Qclid">
+            <summary>
+            The Quora Click ID. Ex: qclid123
+            </summary>
+            <value>The Quora Click ID. Ex: qclid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.RdtCidOption">
+            <summary>
+            Used to track the state of RdtCid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.RdtCid">
+            <summary>
+            The Reddit Click ID. Ex: rdt_cid123
+            </summary>
+            <value>The Reddit Click ID. Ex: rdt_cid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.HostOption">
+            <summary>
+            Used to track the state of Host
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Host">
+            <summary>
+            The host of the current page. Ex: example.com
+            </summary>
+            <value>The host of the current page. Ex: example.com</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.IpOption">
+            <summary>
+            Used to track the state of Ip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Ip">
+            <summary>
+            The IP address of the user. Ex: 127.0.0.1
+            </summary>
+            <value>The IP address of the user. Ex: 127.0.0.1</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.MsclkidOption">
+            <summary>
+            Used to track the state of Msclkid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Msclkid">
+            <summary>
+            The Microsoft Click ID. Ex: msclkid123
+            </summary>
+            <value>The Microsoft Click ID. Ex: msclkid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.LiFatIdOption">
+            <summary>
+            Used to track the state of LiFatId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.LiFatId">
+            <summary>
+            The LinkedIn Click ID. Ex: li_fat_id123
+            </summary>
+            <value>The LinkedIn Click ID. Ex: li_fat_id123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.PathnameOption">
+            <summary>
+            Used to track the state of Pathname
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Pathname">
+            <summary>
+            The pathname of the current page. Ex: /home
+            </summary>
+            <value>The pathname of the current page. Ex: /home</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ReferrerOption">
+            <summary>
+            Used to track the state of Referrer
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Referrer">
+            <summary>
+            The referrer URL of the current page
+            </summary>
+            <value>The referrer URL of the current page</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ScreenHeightOption">
+            <summary>
+            Used to track the state of ScreenHeight
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ScreenHeight">
+            <summary>
+            The height of the screen. Ex: 1080
+            </summary>
+            <value>The height of the screen. Ex: 1080</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ScreenWidthOption">
+            <summary>
+            Used to track the state of ScreenWidth
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ScreenWidth">
+            <summary>
+            The width of the screen. Ex: 1920
+            </summary>
+            <value>The width of the screen. Ex: 1920</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.TitleOption">
+            <summary>
+            Used to track the state of Title
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Title">
+            <summary>
+            The title of the current page
+            </summary>
+            <value>The title of the current page</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UserAgentOption">
+            <summary>
+            Used to track the state of UserAgent
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UserAgent">
+            <summary>
+            The user agent of the browser
+            </summary>
+            <value>The user agent of the browser</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmCampaignOption">
+            <summary>
+            Used to track the state of UtmCampaign
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmCampaign">
+            <summary>
+            The UTM Campaign. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The UTM Campaign. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmContentOption">
+            <summary>
+            Used to track the state of UtmContent
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmContent">
+            <summary>
+            The UTM Content. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The UTM Content. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmMediumOption">
+            <summary>
+            Used to track the state of UtmMedium
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmMedium">
+            <summary>
+            The UTM Medium. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The UTM Medium. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmNameOption">
+            <summary>
+            Used to track the state of UtmName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmName">
+            <summary>
+            The UTM Name. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The UTM Name. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.TtclidOption">
+            <summary>
+            Used to track the state of Ttclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Ttclid">
+            <summary>
+            The TikTok Click ID. Ex: ttclid123
+            </summary>
+            <value>The TikTok Click ID. Ex: ttclid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.TwclidOption">
+            <summary>
+            Used to track the state of Twclid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Twclid">
+            <summary>
+            The Twitter Click ID. Ex: twclid123
+            </summary>
+            <value>The Twitter Click ID. Ex: twclid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ClickidOption">
+            <summary>
+            Used to track the state of Clickid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Clickid">
+            <summary>
+            The Click ID. Ex: clickid123
+            </summary>
+            <value>The Click ID. Ex: clickid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ClidOption">
+            <summary>
+            Used to track the state of Clid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Clid">
+            <summary>
+            The Generic Click ID. Ex: clid123
+            </summary>
+            <value>The Generic Click ID. Ex: clid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.SccidOption">
+            <summary>
+            Used to track the state of Sccid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Sccid">
+            <summary>
+            The SnapChat Click ID. Ex: sccid123
+            </summary>
+            <value>The SnapChat Click ID. Ex: sccid123</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmSourceOption">
+            <summary>
+            Used to track the state of UtmSource
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmSource">
+            <summary>
+            The UTM Source. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The UTM Source. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmTermOption">
+            <summary>
+            Used to track the state of UtmTerm
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UtmTerm">
+            <summary>
+            The UTM Term. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The UTM Term. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.VarVersionOption">
+            <summary>
+            Used to track the state of VarVersion
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.VarVersion">
+            <summary>
+            The version of the web SDK
+            </summary>
+            <value>The version of the web SDK</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.WbraidOption">
+            <summary>
+            Used to track the state of Wbraid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Wbraid">
+            <summary>
+            The WBRAID Identifier. The web SDK automatically captures this from the query params.
+            </summary>
+            <value>The WBRAID Identifier. The web SDK automatically captures this from the query params.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.UafvlOption">
+            <summary>
+            Used to track the state of Uafvl
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Uafvl">
+            <summary>
+            User agent as a full list of strings.
+            </summary>
+            <value>User agent as a full list of strings.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.PageHashOption">
+            <summary>
+            Used to track the state of PageHash
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.PageHash">
+            <summary>
+            A random set of numbers for the page load
+            </summary>
+            <value>A random set of numbers for the page load</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.SidOption">
+            <summary>
+            Used to track the state of Sid
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Sid">
+            <summary>
+            The session ID as assigned automatically by the web SDK.
+            </summary>
+            <value>The session ID as assigned automatically by the web SDK.</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.NewSOption">
+            <summary>
+            Used to track the state of NewS
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.NewS">
+            <summary>
+            Deprecated
+            </summary>
+            <value>Deprecated</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.FvOption">
+            <summary>
+            Used to track the state of Fv
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Fv">
+            <summary>
+            Deprecated
+            </summary>
+            <value>Deprecated</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.SrOption">
+            <summary>
+            Used to track the state of Sr
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestDefaultProperties.Sr">
+            <summary>
+            Gets or Sets Sr
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestDefaultProperties.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestDefaultProperties.System#ComponentModel#DataAnnotations#IValidatableObject#Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            To validate all properties of the instance
+            </summary>
+            <param name="validationContext">Validation context</param>
+            <returns>Validation Result</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.TrackRequestDefaultPropertiesJsonConverter">
+            <summary>
+            A Json converter for type <see cref="T:Com.OursPrivacy.Model.TrackRequestDefaultProperties" />
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestDefaultPropertiesJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Deserializes json to <see cref="T:Com.OursPrivacy.Model.TrackRequestDefaultProperties" />
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="typeToConvert"></param>
+            <param name="jsonSerializerOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestDefaultPropertiesJsonConverter.Write(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.TrackRequestDefaultProperties,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes a <see cref="T:Com.OursPrivacy.Model.TrackRequestDefaultProperties" />
+            </summary>
+            <param name="writer"></param>
+            <param name="trackRequestDefaultProperties"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestDefaultPropertiesJsonConverter.WriteProperties(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.TrackRequestDefaultProperties,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes the properties of <see cref="T:Com.OursPrivacy.Model.TrackRequestDefaultProperties" />
+            </summary>
+            <param name="writer"></param>
+            <param name="trackRequestDefaultProperties"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.TrackRequestUserProperties">
+            <summary>
+            Additional user properties you want to pass along to the destinations. (optional) You can also update these properties via the identify endpoint.
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestUserProperties.#ctor(Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Object},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Object},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.String},Com.OursPrivacy.Client.Option{System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Com.OursPrivacy.Model.TrackRequestUserProperties" /> class.
+            </summary>
+            <param name="email">email</param>
+            <param name="firstName">firstName</param>
+            <param name="lastName">lastName</param>
+            <param name="gender">gender</param>
+            <param name="dateOfBirth">dateOfBirth</param>
+            <param name="phoneNumber">phoneNumber</param>
+            <param name="city">city</param>
+            <param name="state">state</param>
+            <param name="zip">zip</param>
+            <param name="country">country</param>
+            <param name="externalId">externalId</param>
+            <param name="companyName">companyName</param>
+            <param name="jobTitle">jobTitle</param>
+            <param name="ip">The IP address of the user</param>
+            <param name="customProperties">customProperties</param>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.EmailOption">
+            <summary>
+            Used to track the state of Email
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.Email">
+            <summary>
+            Gets or Sets Email
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.FirstNameOption">
+            <summary>
+            Used to track the state of FirstName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.FirstName">
+            <summary>
+            Gets or Sets FirstName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.LastNameOption">
+            <summary>
+            Used to track the state of LastName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.LastName">
+            <summary>
+            Gets or Sets LastName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.GenderOption">
+            <summary>
+            Used to track the state of Gender
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.Gender">
+            <summary>
+            Gets or Sets Gender
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.DateOfBirthOption">
+            <summary>
+            Used to track the state of DateOfBirth
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.DateOfBirth">
+            <summary>
+            Gets or Sets DateOfBirth
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.PhoneNumberOption">
+            <summary>
+            Used to track the state of PhoneNumber
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.PhoneNumber">
+            <summary>
+            Gets or Sets PhoneNumber
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.CityOption">
+            <summary>
+            Used to track the state of City
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.City">
+            <summary>
+            Gets or Sets City
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.StateOption">
+            <summary>
+            Used to track the state of State
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.State">
+            <summary>
+            Gets or Sets State
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.ZipOption">
+            <summary>
+            Used to track the state of Zip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.Zip">
+            <summary>
+            Gets or Sets Zip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.CountryOption">
+            <summary>
+            Used to track the state of Country
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.Country">
+            <summary>
+            Gets or Sets Country
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.ExternalIdOption">
+            <summary>
+            Used to track the state of ExternalId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.ExternalId">
+            <summary>
+            Gets or Sets ExternalId
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.CompanyNameOption">
+            <summary>
+            Used to track the state of CompanyName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.CompanyName">
+            <summary>
+            Gets or Sets CompanyName
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.JobTitleOption">
+            <summary>
+            Used to track the state of JobTitle
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.JobTitle">
+            <summary>
+            Gets or Sets JobTitle
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.IpOption">
+            <summary>
+            Used to track the state of Ip
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.Ip">
+            <summary>
+            The IP address of the user
+            </summary>
+            <value>The IP address of the user</value>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.CustomPropertiesOption">
+            <summary>
+            Used to track the state of CustomProperties
+            </summary>
+        </member>
+        <member name="P:Com.OursPrivacy.Model.TrackRequestUserProperties.CustomProperties">
+            <summary>
+            Gets or Sets CustomProperties
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestUserProperties.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestUserProperties.System#ComponentModel#DataAnnotations#IValidatableObject#Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            To validate all properties of the instance
+            </summary>
+            <param name="validationContext">Validation context</param>
+            <returns>Validation Result</returns>
+        </member>
+        <member name="T:Com.OursPrivacy.Model.TrackRequestUserPropertiesJsonConverter">
+            <summary>
+            A Json converter for type <see cref="T:Com.OursPrivacy.Model.TrackRequestUserProperties" />
+            </summary>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestUserPropertiesJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Deserializes json to <see cref="T:Com.OursPrivacy.Model.TrackRequestUserProperties" />
+            </summary>
+            <param name="utf8JsonReader"></param>
+            <param name="typeToConvert"></param>
+            <param name="jsonSerializerOptions"></param>
+            <returns></returns>
+            <exception cref="T:System.Text.Json.JsonException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestUserPropertiesJsonConverter.Write(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.TrackRequestUserProperties,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes a <see cref="T:Com.OursPrivacy.Model.TrackRequestUserProperties" />
+            </summary>
+            <param name="writer"></param>
+            <param name="trackRequestUserProperties"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Com.OursPrivacy.Model.TrackRequestUserPropertiesJsonConverter.WriteProperties(System.Text.Json.Utf8JsonWriter,Com.OursPrivacy.Model.TrackRequestUserProperties,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Serializes the properties of <see cref="T:Com.OursPrivacy.Model.TrackRequestUserProperties" />
+            </summary>
+            <param name="writer"></param>
+            <param name="trackRequestUserProperties"></param>
+            <param name="jsonSerializerOptions"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.JsonRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the JsonRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.JsonRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.JsonRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.JsonRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.JsonRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.JsonRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.JsonRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.JsonRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.JsonRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPop(System.Int32[],System.Int32@,System.Int32@,System.Int32@)">
+            <summary>Pops 2 values from the backtracking stack.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPush(System.Int32[]@,System.Int32@,System.Int32)">
+            <summary>Pushes 1 value onto the backtracking stack.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPush(System.Int32[]@,System.Int32@,System.Int32,System.Int32)">
+            <summary>Pushes 2 values onto the backtracking stack.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPush(System.Int32[]@,System.Int32@,System.Int32,System.Int32,System.Int32)">
+            <summary>Pushes 3 values onto the backtracking stack.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_20000018000080000000000000000">
+            <summary>Supports searching for characters in or not in "\t /;".</summary>
+        </member>
+    </members>
+</doc>
