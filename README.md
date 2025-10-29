@@ -4,13 +4,21 @@ The Ours Privacy Server-Side REST API SDK for .NET provides a comprehensive clie
 
 ## Installation
 
-Install the NuGet package:
+### Prerequisites
+- .NET 8.0 or later
+- Visual Studio 2022 or equivalent development environment
+
+### Install the Package
 
 ```bash
+# Package Manager Console
 Install-Package Com.OursPrivacy
-# or
+
+# .NET CLI
 dotnet add package Com.OursPrivacy
 ```
+
+> **Note**: This package is not yet published to NuGet. See [PUBLISHING.md](PUBLISHING.md) for information on how to publish it.
 
 ## Quick Start
 
@@ -180,3 +188,14 @@ For detailed API documentation, see:
   - [TrackRequest](docs/models/TrackRequest.md)
   - [Track200Response](docs/models/Track200Response.md)
 - [Generated Client README](src/Com.OursPrivacy/README.md) - Additional configuration options
+
+## Contributing
+
+For information on how to contribute to this project, including how to build and publish releases, see [PUBLISHING.md](PUBLISHING.md).
+
+## Support
+
+- **Documentation**: https://docs.oursprivacy.com/docs/dotnet#/
+- **NuGet Package**: https://www.nuget.org/packages/Com.OursPrivacy/ (once published)
+- **Issues**: https://github.com/with-ours/ingest-sdk-net/issues
+- **Repository**: https://github.com/with-ours/ingest-sdk-net
